@@ -12,6 +12,9 @@
           <v-list-item prepend-icon="mdi-account-group" @click="handleNavigation('gerenciar-usuarios')">Gerenciar
             Usuários</v-list-item>
         </v-list>
+        <v-container color="#212c3a">
+          <v-btn v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs" elevation="2">Sair</v-btn>
+        </v-container>
       </v-navigation-drawer>
 
       <v-app-bar flat color="#3c8bbc" class="border-b">
@@ -20,7 +23,8 @@
         </v-img>
       </v-app-bar>
       <v-main>
-        <LoginView />
+        <DataView/>
+       <!--  <LoginView /> -->
         <!-- <RegistrationView/>-->
       </v-main>
 
@@ -34,6 +38,7 @@ import { ref } from 'vue';
 import HomeView from './views/HomeView.vue';
 import RegistrationView from './views/RegistrationView.vue';
 import LoginView from './views/LoginView.vue';
+import DataView from './views/DataView.vue';
 
 const isDrawerOpen = ref(false)
 
@@ -42,6 +47,8 @@ const handleNavigation = (route) => {
   console.log(`Navegando para: ${route}`);
   // Substitua o console.log por lógica de navegação
 };
+
+const isAuthenticated = ref(true);
 </script>
 
 <style>
