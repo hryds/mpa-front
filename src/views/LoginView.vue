@@ -14,9 +14,9 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ccffcc', color: 'black' }">Entrar</v-btn>
-                    <v-btn  @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Cadastrar
+                    <v-btn class="text-none" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Entrar</v-btn>
+                    <v-btn class="text-none" @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Cadastrar
                         Novo Usuário</v-btn>
                 </v-card-actions>
             </v-card>

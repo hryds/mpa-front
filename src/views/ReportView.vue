@@ -180,7 +180,7 @@
         <v-container>
             <v-card>
                 <v-card-actions>
-                    <v-btn prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
+                    <v-btn class="text-none" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>

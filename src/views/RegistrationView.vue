@@ -17,8 +17,8 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn rounded="xs" elevation="2" :style="{ backgroundColor: '#ccffcc', color: 'black' }">Salvar</v-btn>
-          <v-btn rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Voltar para
+          <v-btn class="text-none" rounded="xs" elevation="2" :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Salvar</v-btn>
+          <v-btn class="text-none" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Voltar para
             Login</v-btn>
         </v-card-actions>
       </v-card>

@@ -9,11 +9,11 @@
             Produção </v-list-item>
           <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-download" @click="router.push(`/extracao-dados`)">Extração de
             Dados</v-list-item>
-          <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-account-group" @click="router.push(`/extracao-dados`)">Gerenciar
+          <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-account-group" @click="router.push(`/gerenciar-usuarios`)">Gerenciar
             Usuários</v-list-item>
         </v-list>
         <v-container color="#212c3a">
-          <v-btn v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs" elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Sair</v-btn>
+          <v-btn class="text-none" v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs" elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Sair</v-btn>
         </v-container>
       </v-navigation-drawer>
 

@@ -6,7 +6,7 @@
                     Extração de Dados
                 </v-card-title>
                 <v-card-actions>
-                    <v-btn prepend-icon="mdi-download" rounded="xs" elevation="2"
+                    <v-btn class="text-none" prepend-icon="mdi-download" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Baixar Dados de Produção</v-btn>
                 </v-card-actions>
             </v-card>
