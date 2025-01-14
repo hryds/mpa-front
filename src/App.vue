@@ -5,15 +5,15 @@
       <v-navigation-drawer class="border" permanent v-model="isDrawerOpen" color="#212c3a">
         <v-list>
           <v-list-subheader></v-list-subheader>
-          <v-list-item prepend-icon="mdi-fish" @click="handleNavigation('reportar-producao')">Reportar
-            Produção</v-list-item>
-          <v-list-item prepend-icon="mdi-download" @click="handleNavigation('extracao-dados')">Extração de
+          <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-fish" @click="router.push(`/reportar-producao`)">Reportar
+            Produção </v-list-item>
+          <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-download" @click="router.push(`/extracao-dados`)">Extração de
             Dados</v-list-item>
-          <v-list-item prepend-icon="mdi-account-group" @click="handleNavigation('gerenciar-usuarios')">Gerenciar
+          <v-list-item  class="elevation-2 border-double border-md" prepend-icon="mdi-account-group" @click="router.push(`/extracao-dados`)">Gerenciar
             Usuários</v-list-item>
         </v-list>
         <v-container color="#212c3a">
-          <v-btn v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs" elevation="2">Sair</v-btn>
+          <v-btn v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs" elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Sair</v-btn>
         </v-container>
       </v-navigation-drawer>
 
@@ -23,10 +23,11 @@
         </v-img>
       </v-app-bar>
       <v-main>
-        <ReportView/>
+        <!--<ReportView/>-->
         <!-- <DataView/>-->
-       <!--  <LoginView /> -->
+        <!-- <LoginView /> -->
         <!-- <RegistrationView/>-->
+         <RouterView/>
       </v-main>
 
     </v-app>
@@ -41,13 +42,12 @@ import RegistrationView from './views/RegistrationView.vue';
 import LoginView from './views/LoginView.vue';
 import DataView from './views/DataView.vue';
 import ReportView from './views/ReportView.vue';
+import { RouterView, RouterLink } from 'vue-router';
+import {useRoute, useRouter} from "vue-router"
 const isDrawerOpen = ref(false)
+const route = useRoute()
+const router = useRouter()
 
-
-const handleNavigation = (route) => {
-  console.log(`Navegando para: ${route}`);
-  // Substitua o console.log por lógica de navegação
-};
 
 const isAuthenticated = ref(true);
 </script>

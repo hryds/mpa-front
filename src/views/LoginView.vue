@@ -16,7 +16,7 @@
                 <v-card-actions>
                     <v-btn rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#ccffcc', color: 'black' }">Entrar</v-btn>
-                    <v-btn rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
+                    <v-btn  @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Cadastrar
                         Novo Usuário</v-btn>
                 </v-card-actions>
             </v-card>
@@ -27,6 +27,10 @@
 <script setup>
 import { ref } from 'vue';
 const visible = ref(false)
+
+const route = useRoute()
+const router = useRouter()
+import {useRoute, useRouter} from "vue-router"
 </script>
 
 <style scoped></style>
