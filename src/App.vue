@@ -23,7 +23,8 @@
         </v-img>
       </v-app-bar>
       <v-main>
-        <DataView/>
+        <ReportView/>
+        <!-- <DataView/>-->
        <!--  <LoginView /> -->
         <!-- <RegistrationView/>-->
       </v-main>
@@ -39,7 +40,7 @@ import HomeView from './views/HomeView.vue';
 import RegistrationView from './views/RegistrationView.vue';
 import LoginView from './views/LoginView.vue';
 import DataView from './views/DataView.vue';
-
+import ReportView from './views/ReportView.vue';
 const isDrawerOpen = ref(false)
 
 
@@ -55,6 +56,7 @@ const isAuthenticated = ref(true);
 .v-application {
   background: url('./assets/atum.png') no-repeat center;
   background-size: cover;
+  background-attachment: fixed;
 }
 
 .v-navigation-drawer .v-list-item {

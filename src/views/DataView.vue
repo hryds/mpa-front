@@ -7,7 +7,7 @@
                 </v-card-title>
                 <v-card-actions>
                     <v-btn prepend-icon="mdi-download" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#d9d9d9', color: 'black' }">Baixar Dados de Produção</v-btn>
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Baixar Dados de Produção</v-btn>
                 </v-card-actions>
             </v-card>
         </v-container>

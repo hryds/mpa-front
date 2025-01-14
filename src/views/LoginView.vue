@@ -16,7 +16,7 @@
                 <v-card-actions>
                     <v-btn rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#ccffcc', color: 'black' }">Entrar</v-btn>
-                    <v-btn rounded="xs" elevation="2" :style="{ backgroundColor: '#d9d9d9', color: 'black' }">Cadastrar
+                    <v-btn rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
                 </v-card-actions>
             </v-card>
