@@ -2,7 +2,7 @@
     <v-app>
         <v-container>
             <v-card outlined>
-                <v-card-title class="text-h5" >
+                <v-card-title class="text-h5">
                     <v-tooltip text="Voltar">
                         <template v-slot:activator="{ props }">
                             <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
@@ -41,11 +41,11 @@
                         <v-row>
                             <v-col cols="12" md="6">
                                 <v-text-field v-model="dataInicial" label="Data Inicial do Lote" required
-                                    variant="outlined" type="date"></v-text-field>
+                                    variant="outlined" type="date" :rules="[validateNotNull]" ></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-text-field v-model="dataFinal" label="Data Final do Lote" required variant="outlined"
-                                    type="date"></v-text-field>
+                                    type="date" :rules="[validateDataFinal]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -64,9 +64,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">Embarcação (a)</span>
+                                </v-text>
                                 <v-text-field label="Embarcação (a)" required variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">RGP - Embarcação (a)</span>
+                                </v-text>
                                 <v-text-field label="RGP - Embarcação (a)" required variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
@@ -76,9 +82,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">Embarcação (b)</span>
+                                </v-text>
                                 <v-text-field label="Embarcação (b)" required variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">RGP - Embarcação (b)</span>
+                                </v-text>
                                 <v-text-field label="RGP - Embarcação (b)" required variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
@@ -88,9 +100,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">Embarcação (c)</span>
+                                </v-text>
                                 <v-text-field label="Embarcação (c)" required variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">RGP - Embarcação (c)</span>
+                                </v-text>
                                 <v-text-field label="RGP - Embarcação (c)" required variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
@@ -100,9 +118,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">Embarcação (d)</span>
+                                </v-text>
                                 <v-text-field label="Embarcação (d)" required variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">RGP - Embarcação (d)</span>
+                                </v-text>
                                 <v-text-field label="RGP - Embarcação (d)" required variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
@@ -112,9 +136,15 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">Embarcação (e)</span>
+                                </v-text>
                                 <v-text-field label="Embarcação (e)" required variant="outlined"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
+                                <v-text>
+                                    <span class="font-weight-bold">RGP - Embarcação (e)</span>
+                                </v-text>
                                 <v-text-field label="RGP - Embarcação (e)" required variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
@@ -201,8 +231,9 @@
 
 <script setup>
 import { ref } from 'vue';
-
-import {useRoute, useRouter} from "vue-router"
+import { validateNotNull } from '@/utils.js/validation';
+import { useRoute, useRouter } from "vue-router"
+import { especies } from '@/utils.js/data';
 
 const valid = ref(true);
 const dataInicial = ref("");
@@ -212,31 +243,14 @@ const visible = ref(false)
 const route = useRoute()
 const router = useRouter()
 
-
-const especies = ref([
-    { nome: 'Thunnus thynnus (Albacora azul)' },
-    { nome: 'Thunnus albacares (Albacora laje)' },
-    { nome: 'Thunnus alalunga (Albacora branca)' },
-    { nome: 'Thunnus obesus (Albacora bandolim)' },
-    { nome: 'Bonito-listrado (SKJ)' },
-    { nome: 'Thunnus atlanticus (Albacorinha)' },
-    { nome: 'Katsuwonus pelamis (Bonito listrado)' },
-    { nome: 'Sarda sarda (Sarda)' },
-    { nome: 'Auxis thazard (Bonito cachorro)' },
-    { nome: 'Acanthocybium solandri (Cavala empige)' },
-    { nome: 'Scomberomorus cavalla (Cavala)' },
-    { nome: 'Scomberomorus brasiliensis (Serra)' },
-    { nome: 'Istiophorus albicans (Agulhão vela)' },
-    { nome: 'Makaira nigricans (Agulhão negro)' },
-    { nome: 'Kajikia albida (Agulhão branco)' },
-    { nome: 'Xiphias gladius (Espadarte)' },
-    { nome: 'Tetrapturus pfluegeri (Agulhão verde)' },
-    { nome: 'Prionace glauca (Tubarão azul)' },
-    { nome: 'Carcharhinus longimanus (Tubarão estrangeiro)' },
-    { nome: 'Carcharhinus falciformis (Tubarão lombo-preto)' },
-    { nome: 'Isurus oxyrinchus (Mako/ Anequim)' },
-    { nome: 'Alopias superciliosus (Tubarão raposa)' },
-    { nome: 'Coryphaena hippurus (Dourado)' }
-]);
+const validateDataFinal = (value) => {
+    if (!value) {
+        return "Obrigatório";
+    }
+    if (dataInicial.value && value <= dataInicial.value) {
+        return "A Data Final do Lote deve ser posterior à Data Inicial";
+    }
+    return true;
+};
 
 </script>

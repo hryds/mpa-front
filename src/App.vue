@@ -16,7 +16,7 @@
             Usuários</v-list-item>
         </v-list>
         <v-container color="#212c3a">
-          <v-btn class="text-none border-md elevated" v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs"
+          <v-btn @click="router.push(`/`)" class="text-none border-md elevated" v-if="isAuthenticated" prepend-icon="mdi-logout" rounded="xs"
             elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Sair</v-btn>
         </v-container>
       </v-navigation-drawer>
@@ -58,6 +58,8 @@ const router = useRouter()
 
 
 const isAuthenticated = ref(true);
+
+
 </script>
 
 <style>

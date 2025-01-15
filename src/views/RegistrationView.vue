@@ -12,13 +12,16 @@
         </v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field label="Nome da Empresa" required variant="outlined"></v-text-field>
-            <v-text-field label="E-mail" required variant="outlined" type="email"></v-text-field>
-            <v-text-field label="CNPJ" required variant="outlined"></v-text-field>
-            <v-text-field label="RGP" required variant="outlined"></v-text-field>
-            <v-text-field label="Endereço" required variant="outlined"></v-text-field>
+            <v-text-field label="Nome da Empresa" required :rules="[validateNotNull]" variant="outlined"></v-text-field>
+            <v-text-field label="E-mail" required :rules="[validateNotNull, validateEmail]" variant="outlined"
+              type="email"></v-text-field>
+            <v-text-field label="CNPJ" required :rules="[validateNotNull, validateCNPJ]"
+              variant="outlined"></v-text-field>
+            <v-text-field label="RGP" required :rules="[validateNotNull]" variant="outlined"></v-text-field>
+            <v-text-field label="Endereço" required :rules="[validateNotNull]" variant="outlined"></v-text-field>
             <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
-              placeholder="Senha" variant="outlined" @click:append-inner="visible = !visible"></v-text-field>
+              placeholder="Senha" variant="outlined" @click:append-inner="visible = !visible" required
+              :rules="[validateNotNull]"></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -36,6 +39,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from "vue-router"
+import { validateNotNull, validateEmail, validateCNPJ, validateRGP } from '@/utils.js/validation';
 const visible = ref(false)
 
 const route = useRoute()

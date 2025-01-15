@@ -7,8 +7,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-form>
-                        <v-text-field label="E-mail" required variant="outlined" type="email"></v-text-field>
-                        <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                        <v-text-field :rules="[validateNotNull]" label="E-mail" required variant="outlined" type="email"></v-text-field>
+                        <v-text-field :rules="[validateNotNull]" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                             :type="visible ? 'text' : 'password'" placeholder="Senha" variant="outlined"
                             @click:append-inner="visible = !visible"></v-text-field>
                     </v-form>
@@ -29,10 +29,14 @@
 <script setup>
 import { ref } from 'vue';
 import {useRoute, useRouter} from "vue-router"
+import { validateNotNull } from '@/utils.js/validation';
 const visible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
+
+
+
 </script>
 
 <style scoped></style>
