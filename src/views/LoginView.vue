@@ -14,23 +14,25 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn class="text-none" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Entrar</v-btn>
-                    <v-btn class="text-none" @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Cadastrar
+                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Cadastrar
                         Novo Usuário</v-btn>
+                        <v-spacer></v-spacer> 
+                    <v-btn class="text-none border" prepend-icon="mdi-microsoft" @click="router.push(`/cadastro`)" rounded="xs" elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" >Continue com Microsoft</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-container>
+        </v-container> 
     </v-app>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import {useRoute, useRouter} from "vue-router"
 const visible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
-import {useRoute, useRouter} from "vue-router"
 </script>
 
 <style scoped></style>

@@ -1,5 +1,17 @@
 <template>
     <v-app>
+        <v-container>
+            <v-card outlined>
+                <v-card-title class="text-h5" >
+                    <v-tooltip text="Voltar">
+                        <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
+                        </template>
+                    </v-tooltip>
+                    Reportar Produção
+                </v-card-title>
+            </v-card>
+        </v-container>
         <v-container outlined>
             <v-card color="#00a65a">
                 <v-card-title class="text-h5 ">
@@ -180,7 +192,7 @@
         <v-container>
             <v-card>
                 <v-card-actions>
-                    <v-btn class="text-none" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
@@ -189,12 +201,17 @@
 
 <script setup>
 import { ref } from 'vue';
-const visible = ref(false)
 
+import {useRoute, useRouter} from "vue-router"
 
 const valid = ref(true);
 const dataInicial = ref("");
 const dataFinal = ref("");
+const visible = ref(false)
+
+const route = useRoute()
+const router = useRouter()
+
 
 const especies = ref([
     { nome: 'Thunnus thynnus (Albacora azul)' },
