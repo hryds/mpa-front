@@ -39,3 +39,14 @@ export const validateRGP = (value) => {
     }
     return true;
 };
+
+export const validateCEP = (value) => {
+    const cepRegex = /^\d{5}-?\d{3}$$/;
+    if (!value) {
+        return "Obrigatório.";
+    }
+    if (!cepRegex.test(value)) {
+        return "CEP inválido.";
+    }
+    return true;
+};

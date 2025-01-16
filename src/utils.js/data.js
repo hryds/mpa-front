@@ -25,3 +25,26 @@ export const especies = ref([
     { nome: 'Alopias superciliosus (Tubarão raposa)' },
     { nome: 'Coryphaena hippurus (Dourado)' }
 ]);
+
+export const users = ref([
+    {
+        id: 1,
+        email: 'empresa1@email.com',
+        nome: 'Empresa 1',
+        tipo: 'comum',
+        stts: 'pendente',
+        cnpj: '99.187.675/0601-43',
+        rgp: 'AA12696890',
+        endereco: 'Rua ABC Num. 1234',
+    },
+    {
+        id: 2,
+        email: 'empresa2@email.com',
+        nome: 'Empresa 2',
+        tipo: 'comum',
+        stts: 'aprovado',
+        cnpj: '98.187.675/0601-43',
+        rgp: 'AB12696890',
+        endereco: 'Rua ABC Num. 1234',
+    },
+]);

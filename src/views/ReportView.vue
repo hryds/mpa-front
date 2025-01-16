@@ -223,7 +223,7 @@
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Enviar</v-btn>
+                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
     </v-app>

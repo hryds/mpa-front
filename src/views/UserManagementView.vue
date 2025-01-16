@@ -11,7 +11,7 @@
                     Gerenciar Usuários
                 </v-card-title>
                 <v-card-text>
-                    <h5>Selecionados: {{ selected }}</h5>
+                    <h5 v-if="selected.length > 0">Selecionados: {{ selected }}</h5>
                     <v-data-table v-model="selected" :headers="headers" :items="users" item-key="id" show-select
                         class="elevation-1">
                     </v-data-table>
@@ -32,6 +32,7 @@
 <script setup>
 import { ref } from 'vue';
 import {useRoute, useRouter} from "vue-router"
+import { users } from '@/utils.js/data';
 const visible = ref(false)
 
 const route = useRoute()
@@ -48,29 +49,6 @@ const headers = ref([
     { title: "CNPJ", value: "cnpj", sortable: true },
     { title: "RGP", value: "rgp", sortable: true },
     { title: "Endereço", value: "endereco" },
-]);
-
-const users = ref([
-    {
-        id: 1,
-        email: 'empresa1@email.com',
-        nome: 'Empresa 1',
-        tipo: 'comum',
-        stts: 'pendente',
-        cnpj: '99.187.675/0601-43',
-        rgp: 'AA12696890',
-        endereco: 'Rua ABC Num. 1234',
-    },
-    {
-        id: 2,
-        email: 'empresa2@email.com',
-        nome: 'Empresa 2',
-        tipo: 'comum',
-        stts: 'aprovado',
-        cnpj: '98.187.675/0601-43',
-        rgp: 'AB12696890',
-        endereco: 'Rua ABC Num. 1234',
-    },
 ]);
 
 </script>
