@@ -78,8 +78,9 @@
                                 required :rules="[validateNotNull, validateRGP]" variant="outlined"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="2">
-                            <v-btn icon :disabled="embarcacoes.length === 1" @click="removeEmbarcacao(index)"  class="text-none border"  elevation="2"
-                            :style="{ backgroundColor: '#ffbaba', color: 'black' }">
+                            <v-btn icon :disabled="embarcacoes.length === 1" @click="removeEmbarcacao(index)"
+                                class="text-none border" elevation="2"
+                                :style="{ backgroundColor: '#ffbaba', color: 'black' }">
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
                         </v-col>
@@ -87,7 +88,8 @@
                     <v-row>
                         <v-col cols="12">
                             <v-btn class="text-none border" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#f4f4f4', color: 'black' }" :disabled="embarcacoes.length >= 10" @click="addEmbarcacao">
+                                :style="{ backgroundColor: '#f4f4f4', color: 'black' }"
+                                :disabled="embarcacoes.length >= 10" @click="addEmbarcacao">
                                 + Adicionar Embarcação
                             </v-btn>
                         </v-col>
@@ -97,7 +99,7 @@
         </v-container>
 
 
-
+        <!--
 
         <v-container outlined>
             <v-card color="#3b8dbb">
@@ -153,7 +155,40 @@
 
                 </v-form>
             </v-card>
+        </v-container> -->
+
+        <v-container outlined>
+            <v-card color="#3b8dbb">
+                <v-card-title class="text-h5">
+                    Espécies Comercializadas Por Embarcação (Kg)
+                </v-card-title>
+            </v-card>
+            <v-card color="white">
+                <v-form v-model="valid">
+                    <v-container>
+                        <v-row class="d-flex align-center justify-start">
+                            <v-col v-for="(especie, index) in especies" :key="index" cols="12">
+                                <v-row class="border py-2">
+                                    <v-col cols="2" class="d-flex align-center">
+                                        <v-text>
+                                            <span class="font-weight-bold">{{ especie.nome }}</span>
+                                        </v-text>
+                                    </v-col>
+                                    <v-col v-for="(embarcacao, idx) in embarcacoes" :key="idx" cols="2">
+                                        <v-text>
+                                            <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')' }}</span>
+                                        </v-text>
+                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-form>
+            </v-card>
         </v-container>
+
+
         <v-container outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
@@ -161,9 +196,10 @@
                 </v-card-title>
             </v-card>
             <v-card color="white">
-                <v-file-input label="Selecionar Arquivos"></v-file-input>
+                <v-file-input required label="Selecionar Arquivos"></v-file-input>
             </v-card>
         </v-container>
+
 
         <v-container>
             <v-card>
