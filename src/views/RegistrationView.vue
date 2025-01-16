@@ -22,7 +22,7 @@
               variant="outlined"></v-text-field>
             <v-text-field class="pb-2" label="CEP" required :rules="[validateNotNull, validateCEP]"
               variant="outlined"></v-text-field>
-            <v-text-field class="pb-2" label="Complemento" required :rules="[validateNotNull]"
+            <v-text-field class="pb-2" label="Complemento Endereço" required :rules="[validateNotNull]"
               variant="outlined"></v-text-field>
             <v-text-field class="pb-2" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
               :type="visible ? 'text' : 'password'" placeholder="Senha" variant="outlined"
