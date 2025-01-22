@@ -99,63 +99,10 @@
             </v-card>
         </v-container>
 
-        <!--
 
-        <v-container outlined>
-            <v-card color="#3b8dbb">
-                <v-card-title class="text-h5 ">
-                    Espécies Comercializadas Por Embarcação (Kg)
-                </v-card-title>
-            </v-card>
-            <v-card color="white">
-                <v-form v-model="valid">
-                    <v-container>
-                        <v-row class="d-flex align-center justify-start">
-                            <v-col v-for="(especie, index) in especies" :key="index" cols="12">
-                                <v-row class="border py-2">
-                                    <v-col cols="2" class="d-flex align-center">
-                                        <v-text>
-                                            <span class="font-weight-bold">{{ especie.nome }}</span>
-                                        </v-text>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text>
-                                            <span class="font-weight-bold">Embarcação (a)</span>
-                                        </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text>
-                                            <span class="font-weight-bold">Embarcação (b)</span>
-                                        </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text>
-                                            <span class="font-weight-bold">Embarcação (c)</span>
-                                        </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text>
-                                            <span class="font-weight-bold">Embarcação (d)</span>
-                                        </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="2">
-                                        <v-text>
-                                            <span class="font-weight-bold">Embarcação (e)</span>
-                                        </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
-                    </v-container>
 
-                </v-form>
-            </v-card>
-        </v-container> -->
+
+
 
         <v-container outlined>
             <v-card color="#3b8dbb">
@@ -167,18 +114,23 @@
                 <v-form v-model="valid">
                     <v-container>
                         <v-row class="d-flex align-center justify-start">
-                            <v-col v-for="(especie, index) in especies" :key="index" cols="12">
+                            <v-col v-for="(especie, index) in especiesData" :key="index" cols="12">
                                 <v-row class="border py-2">
                                     <v-col cols="2" class="d-flex align-center">
                                         <v-text>
-                                            <span class="font-weight-bold">{{ especie.nome }}</span>
+                                            <span class="font-weight-bold">{{ especie.nomeComum }} </span>
+                                            <span class="font-weight-bold" style="font-style:italic">
+                                                ({{
+                                                    especie.nomeCientifico
+                                                }})</span>
                                         </v-text>
                                     </v-col>
                                     <v-col v-for="(embarcacao, idx) in embarcacoes" :key="idx" cols="2">
                                         <v-text>
                                             <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')' }}</span>
                                         </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"></v-text-field>
+                                        <v-text-field label="Kg" variant="outlined" type="number"
+                                            :min="0"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -200,12 +152,12 @@
             </v-card>
         </v-container>
 
-
         <v-container>
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="saveReport" :disabled="!isReportFormValid">Enviar</v-btn>
+                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="saveReport"
+                        :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
     </v-app>
@@ -216,10 +168,11 @@ import { ref, computed } from 'vue';
 import { validateNotNull, validateRGP } from '@/utils.js/validation';
 import { useRoute, useRouter } from "vue-router"
 import APICalls from '@/services/APICalls';
-import { especies } from '@/utils.js/data';
 
 const sessionUserId = ref(1);
 const producaoId = ref(1);
+const embarcacoesId = ref([]);
+
 const valid = ref(true);
 const dataInicial = ref("");
 const dataFinal = ref("");
@@ -228,6 +181,18 @@ const visible = ref(false)
 const userData = ref('')
 const route = useRoute()
 const router = useRouter()
+
+const especiesData = ref([]); const loadEspecies = async () => {
+    try {
+        const response = await APICalls.getEspecies()
+        especiesData.value = response.data.especies
+        console.log(especiesData.value)
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+loadEspecies()
 
 const formReportDateData = ref({
     "dataInicial": "",
@@ -282,27 +247,63 @@ var formattedDate = new Intl.DateTimeFormat('pt-BR', {
     second: '2-digit',
 }).format(currentDate);
 
-console.log(formattedDate);
-
 const saveReport = async () => {
-    console.log(formReportDateData.value)
     try {
+        const embarcacoesComId = await Promise.all(
+            embarcacoes.value.map(async (embarcacao) => {
+                if (embarcacao.rgp) {
+                    try {
+                        const response = await APICalls.getEmbarcacaobyRGP(embarcacao.rgp);
+                        if (response.data?.embarcacao) {
+                            embarcacao.id = response.data.embarcacao.id;
+                            console.log(`Embarcação existente com RGP ${embarcacao.rgp}: ID = ${embarcacao.id}`);
+                        } else {
+                            const responseCreate = await APICalls.createEmbarcacao(embarcacao);
+                            embarcacao.id = responseCreate.data?.embarcacao?.id;
+                            console.log(`Embarcação criada com RGP ${embarcacao.rgp}: ID = ${embarcacao.id}`);
+                        }
+                    } catch (error) {
+                        console.error(`Erro ao buscar embarcação com RGP ${embarcacao.rgp}: ${error.message}`);
+                        const responseCreate = await APICalls.createEmbarcacao(embarcacao);
+                        embarcacao.id = responseCreate.data?.embarcacao?.id;
+                        console.log(`Embarcação criada com RGP ${embarcacao.rgp}: ID = ${embarcacao.id}`);
+                    }
+                } else {
+                    console.log("Embarcação sem RGP especificado: Não foi possível verificar ou criar.");
+                }
+                return embarcacao;
+            })
+        );
+
+        embarcacoesId.value = embarcacoesComId.map(embarcacao => embarcacao.id);
+
+        console.log('Array de IDs das embarcações:', [...embarcacoesId.value]);
+
         const payload = {
             ...formReportDateData.value,
             userId: sessionUserId.value,
+            embarcacoes: embarcacoesId.value,
         };
-        const response = await APICalls.createProducao(payload)
-        producaoId.value = response.data?.producao?.id
-        console.log(producaoId.value)
+
+        console.log('Payload a ser enviado:', payload);
+
+        const response = await APICalls.createProducao(payload);
+        producaoId.value = response.data?.producao?.id;
+        console.log(`Produção criada com ID = ${producaoId.value}`);
     } catch (error) {
-        console.error(error)
+        console.error('Erro ao salvar o relatório de produção:', error);
     }
 };
 
+
+
 const isReportFormValid = computed(() => {
-  return Object.values(formReportDateData.value).every(
-    (value) => value !== '' && value !== null && value !== undefined
-  );
+    const isDateDataValid = Object.values(formReportDateData.value).every(
+        (value) => value !== '' && value !== null && value !== undefined
+    );
+    const hasOneEmbarcacao = embarcacoes.value.some(embarcacao => embarcacao.nome && embarcacao.rgp);
+
+    return isDateDataValid && hasOneEmbarcacao;
 });
 
 </script>

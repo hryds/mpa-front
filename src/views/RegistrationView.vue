@@ -56,7 +56,8 @@
         </v-card-text>
         <v-card-actions>
           <v-btn class="text-none border" rounded="xs" elevation="2"
-          :style="{ backgroundColor: '#f4f4f4', color: 'black' }" text @click="closeModal">{{ modalButtonText }}</v-btn>
+            :style="{ backgroundColor: '#f4f4f4', color: 'black' }" text @click="closeModal">{{ modalButtonText
+            }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -125,7 +126,7 @@ const saveUser = async () => {
     console.log(error);
     modalMessage.value = `Erro ao Cadastrar Usuário: ${error.response?.data?.message || error.message}`;
     modalButtonText.value = 'Tentar Novamente';
-    showModal.value = true; 
+    showModal.value = true;
   }
 };
 

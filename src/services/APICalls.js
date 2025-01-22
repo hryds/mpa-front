@@ -18,6 +18,12 @@ export default{
     },
     getEmbarcacao(id){
         return API().get(`/embarcacoes/${id}`)
+    },
+    createEmbarcacao(formReportEmbarcacaoData){
+        return API().post('/embarcacoes', formReportEmbarcacaoData);
+    },
+    getEspecies(){
+        return API().get('/especies')
     }
     
 }
