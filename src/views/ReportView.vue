@@ -20,11 +20,12 @@
             </v-card>
             <v-card color="white">
                 <v-card-text>
-                    <span class="font-weight-bold">Nome da Empresa: </span>Empresa 1<br>
-                    <span class="font-weight-bold">Email: </span>admin@empresa.com<br>
-                    <span class="font-weight-bold">CNPJ: </span>99.187.675/0601-83<br>
-                    <span class="font-weight-bold">RGP: </span>AA12696691<br>
-                    <span class="font-weight-bold">Data e Hora de Acesso: </span><br>
+                    <span class="font-weight-bold">Nome da Empresa: </span>{{ userData.nome }}<br>
+                    <span class="font-weight-bold">Email: </span>{{ userData.email }}<br>
+                    <span class="font-weight-bold">CNPJ: </span>{{ userData.cnpj }}<br>
+                    <span class="font-weight-bold">RGP: </span>{{ userData.rgp }}<br>
+                    <span class="font-weight-bold">Data e Hora de Acesso: </span>{{ formattedDate }} (Horário Padrão de
+                    Brasília)<br>
                 </v-card-text>
             </v-card>
         </v-container>
@@ -40,12 +41,12 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="dataInicial" label="Data Inicial do Lote" required
-                                    variant="outlined" type="date" :rules="[validateNotNull]"></v-text-field>
+                                <v-text-field v-model="formReportDateData.dataInicial" label="Data Inicial do Lote"
+                                    required variant="outlined" type="date" :rules="[validateNotNull]"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="dataFinal" label="Data Final do Lote" required variant="outlined"
-                                    type="date" :rules="[validateDataFinal]"></v-text-field>
+                                <v-text-field v-model="formReportDateData.dataFinal" label="Data Final do Lote" required
+                                    variant="outlined" type="date" :rules="[validateDataFinal]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -97,7 +98,6 @@
                 </v-container>
             </v-card>
         </v-container>
-
 
         <!--
 
@@ -205,31 +205,40 @@
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Enviar</v-btn>
+                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="saveReport" :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
     </v-app>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { validateNotNull, validateRGP } from '@/utils.js/validation';
 import { useRoute, useRouter } from "vue-router"
+import APICalls from '@/services/APICalls';
 import { especies } from '@/utils.js/data';
 
+const sessionUserId = ref(1);
+const producaoId = ref(1);
 const valid = ref(true);
 const dataInicial = ref("");
 const dataFinal = ref("");
 const visible = ref(false)
 
+const userData = ref('')
 const route = useRoute()
 const router = useRouter()
+
+const formReportDateData = ref({
+    "dataInicial": "",
+    "dataFinal": ""
+});
 
 const validateDataFinal = (value) => {
     if (!value) {
         return "Obrigatório";
     }
-    if (dataInicial.value && value <= dataInicial.value) {
+    if (formReportDateData.value.dataInicial && value <= formReportDateData.value.dataInicial) {
         return "A Data Final do Lote deve ser posterior à Data Inicial";
     }
     return true;
@@ -248,5 +257,52 @@ const removeEmbarcacao = (index) => {
         embarcacoes.value.splice(index, 1);
     }
 };
+
+const loadUser = async (id) => {
+    try {
+        const response = await APICalls.getUser(id);
+        userData.value = response.data.user;
+        console.log(userData.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+loadUser(1);
+
+var currentDate = new Date();
+
+var formattedDate = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+}).format(currentDate);
+
+console.log(formattedDate);
+
+const saveReport = async () => {
+    console.log(formReportDateData.value)
+    try {
+        const payload = {
+            ...formReportDateData.value,
+            userId: sessionUserId.value,
+        };
+        const response = await APICalls.createProducao(payload)
+        producaoId.value = response.data?.producao?.id
+        console.log(producaoId.value)
+    } catch (error) {
+        console.error(error)
+    }
+};
+
+const isReportFormValid = computed(() => {
+  return Object.values(formReportDateData.value).every(
+    (value) => value !== '' && value !== null && value !== undefined
+  );
+});
 
 </script>

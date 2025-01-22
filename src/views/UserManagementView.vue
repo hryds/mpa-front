@@ -12,7 +12,7 @@
                 </v-card-title>
                 <v-card-text>
                     <h5 v-if="selected.length > 0">Selecionados: {{ selected }}</h5>
-                    <v-data-table v-model="selected" :headers="headers" :items="users" item-key="id" show-select
+                    <v-data-table v-model="selected" :headers="headers" :items="usersData" item-key="id" show-select
                         class="elevation-1">
                     </v-data-table>
                 </v-card-text>
@@ -33,7 +33,11 @@
 import { ref } from 'vue';
 import {useRoute, useRouter} from "vue-router"
 import { users } from '@/utils.js/data';
+import APICalls from '@/services/APICalls';
+
 const visible = ref(false)
+const usersData = ref([])
+
 
 const route = useRoute()
 const router = useRouter()
@@ -44,11 +48,22 @@ const headers = ref([
     { title: "ID", value: "id", sortable: true },
     { title: "Nome", value: "nome", sortable: true },
     { title: "Email", value: "email" },
-    { title: "Status", value: "stts" },
+    { title: "Status", value: "status", sortable: true  },
     { title: "Tipo", value: "tipo" },
     { title: "CNPJ", value: "cnpj", sortable: true },
     { title: "RGP", value: "rgp", sortable: true },
-    { title: "Endereço", value: "endereco" },
+    { title: "CEP", value: "cep" },
 ]);
+
+const loadUsers = async () => {
+  try {
+    const response = await APICalls.getUsers()
+    usersData.value = response.data.users
+    console.log(usersData.value)
+  } catch (error) {
+    console.error(error);
+  }
+}
+loadUsers()
 
 </script>
