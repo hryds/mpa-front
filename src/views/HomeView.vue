@@ -68,7 +68,6 @@ const salvarUsuario = async () => {
   try {
     const response = await APICalls.createUser(formUserRegisterData.value);
     console.log('Usuário criado com sucesso:', response.data);
-    // Opcional: limpar o formulário
     Object.keys(formUserRegisterData.value).forEach(key => {
       formUserRegisterData.value[key] = '';
     });

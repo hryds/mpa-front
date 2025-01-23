@@ -100,10 +100,6 @@
         </v-container>
 
 
-
-
-
-
         <v-container outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
@@ -122,6 +118,7 @@
                                             <span class="font-weight-bold" style="font-style:italic">
                                                 ({{
                                                     especie.nomeCientifico
+
                                                 }})</span>
                                         </v-text>
                                     </v-col>
@@ -129,8 +126,8 @@
                                         <v-text>
                                             <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')' }}</span>
                                         </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number"
-                                            :min="0"></v-text-field>
+                                        <v-text-field label="Kg" variant="outlined" type="number" :min="0"
+                                            v-model="dados[especie.id][idx]"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -171,7 +168,21 @@ import APICalls from '@/services/APICalls';
 
 const sessionUserId = ref(1);
 const producaoId = ref(1);
+const reportId = ref(1);
 const embarcacoesId = ref([]);
+
+const dados = ref({});
+
+const initializeDados = () => {
+    dados.value = {};
+    especiesData.value.forEach(especie => {
+        dados.value[especie.id] = [];
+        embarcacoes.value.forEach((embarcacao, idx) => {
+            dados.value[especie.id][idx] = null;
+        });
+    });
+};
+
 
 const valid = ref(true);
 const dataInicial = ref("");
@@ -186,6 +197,7 @@ const especiesData = ref([]); const loadEspecies = async () => {
     try {
         const response = await APICalls.getEspecies()
         especiesData.value = response.data.especies
+        initializeDados();
         console.log(especiesData.value)
     } catch (error) {
         console.error(error);
@@ -198,6 +210,14 @@ const formReportDateData = ref({
     "dataInicial": "",
     "dataFinal": ""
 });
+
+const formReportProducaoData = ref({
+    producaoId: "",
+    embarcacaoId: "",
+    especieId: "",
+    peso: ""
+});
+
 
 const validateDataFinal = (value) => {
     if (!value) {
@@ -278,6 +298,7 @@ const saveReport = async () => {
         embarcacoesId.value = embarcacoesComId.map(embarcacao => embarcacao.id);
 
         console.log('Array de IDs das embarcações:', [...embarcacoesId.value]);
+        console.log(dados.value)
 
         const payload = {
             ...formReportDateData.value,
@@ -290,6 +311,36 @@ const saveReport = async () => {
         const response = await APICalls.createProducao(payload);
         producaoId.value = response.data?.producao?.id;
         console.log(`Produção criada com ID = ${producaoId.value}`);
+
+        formReportProducaoData.value.producaoId = producaoId.value;
+
+        Object.keys(dados.value).forEach((especieId) => {
+            console.log(`Espécie ${especieId}:`);
+            const embarcacoes = dados.value[especieId];
+            if (embarcacoes && embarcacoes.length) {
+                embarcacoes.forEach(async (valor, idx) => {
+                    if (valor !== null) {
+                        console.log(`${embarcacoesId.value[idx]}: ${valor}`);
+                        console.log('Entrou')
+                        formReportProducaoData.value.embarcacaoId = embarcacoesId.value[idx];
+                        formReportProducaoData.value.especieId = especieId;
+                        formReportProducaoData.value.peso = valor;
+
+                        try {
+                            const response = await APICalls.createProducaoEmbarcacaoEspecie(formReportProducaoData.value);
+                            reportId.value = response.data?.producaoEmbarcacaoEspecie?.id;
+                            console.log(`Report criado com ID = ${reportId.value}`);
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                });
+            } else {
+                console.log('Nenhuma embarcação associada.');
+            }
+        });
+
+
     } catch (error) {
         console.error('Erro ao salvar o relatório de produção:', error);
     }

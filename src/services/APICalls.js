@@ -1,7 +1,7 @@
 import API from "./API";
 
-export default{
-    getUsers(){
+export default {
+    getUsers() {
         return API().get('/users')
     },
     getUser(id) {
@@ -10,22 +10,25 @@ export default{
     createUser(formUserRegisterData) {
         return API().post('/users', formUserRegisterData);
     },
-    createProducao(formReportDateData){
+    createProducao(formReportDateData) {
         return API().post('/producoes', formReportDateData);
     },
-    getEmbarcacaobyRGP(rgp){
+    getEmbarcacaobyRGP(rgp) {
         return API().get(`/embarcacoes/rgp/${rgp}`)
     },
-    getEmbarcacao(id){
+    getEmbarcacao(id) {
         return API().get(`/embarcacoes/${id}`)
     },
-    createEmbarcacao(formReportEmbarcacaoData){
+    createEmbarcacao(formReportEmbarcacaoData) {
         return API().post('/embarcacoes', formReportEmbarcacaoData);
     },
-    getEspecies(){
+    getEspecies() {
         return API().get('/especies')
+    },
+    createProducaoEmbarcacaoEspecie(formReportProducaoData) {
+        return API().post('/producaoEmbarcacaoEspecies', formReportProducaoData);
     }
-    
+
 }
 
 

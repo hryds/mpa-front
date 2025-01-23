@@ -31,8 +31,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import {useRoute, useRouter} from "vue-router"
-import { users } from '@/utils.js/data';
+import { useRoute, useRouter } from "vue-router"
 import APICalls from '@/services/APICalls';
 
 const visible = ref(false)
@@ -48,7 +47,7 @@ const headers = ref([
     { title: "ID", value: "id", sortable: true },
     { title: "Nome", value: "nome", sortable: true },
     { title: "Email", value: "email" },
-    { title: "Status", value: "status", sortable: true  },
+    { title: "Status", value: "status", sortable: true },
     { title: "Tipo", value: "tipo" },
     { title: "CNPJ", value: "cnpj", sortable: true },
     { title: "RGP", value: "rgp", sortable: true },
@@ -56,13 +55,13 @@ const headers = ref([
 ]);
 
 const loadUsers = async () => {
-  try {
-    const response = await APICalls.getUsers()
-    usersData.value = response.data.users
-    console.log(usersData.value)
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        const response = await APICalls.getUsers()
+        usersData.value = response.data.users
+        console.log(usersData.value)
+    } catch (error) {
+        console.error(error);
+    }
 }
 loadUsers()
 
