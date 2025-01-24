@@ -153,7 +153,7 @@
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="saveReport"
+                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isReportFormValid ? { opacity: 0.7 } : {} ]" @click="saveReport"
                         :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>

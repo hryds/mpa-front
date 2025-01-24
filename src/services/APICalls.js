@@ -7,8 +7,14 @@ export default {
     getUser(id) {
         return API().get(`/users/${id}`);
     },
+    updateUserStatus(id, statusData) {
+        return API().patch(`/users/updatestatus/${id}`, statusData);
+    },
     createUser(formUserRegisterData) {
         return API().post('/users', formUserRegisterData);
+    },
+    deleteUser(id) {
+        return API().delete(`/users/${id}`);
     },
     createProducao(formReportDateData) {
         return API().post('/producoes', formReportDateData);

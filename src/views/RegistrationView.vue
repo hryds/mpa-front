@@ -32,8 +32,8 @@
         </v-card-text>
         <v-card-actions>
           <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-            :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="saveUser"
-            :disabled="!isFormValid">Salvar</v-btn>
+            :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
+            @click="saveUser" :disabled="!isFormValid">Salvar</v-btn>
           <v-spacer></v-spacer>
           <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2"
             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
@@ -46,7 +46,7 @@
       </v-card>
     </v-container>
 
-    <v-dialog v-model="showModal" max-width="400">
+    <v-dialog v-model="showModal" max-width="600">
       <v-card>
         <v-card-title class="text-h5">
           {{ modalTitle }}

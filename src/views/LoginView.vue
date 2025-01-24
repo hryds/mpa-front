@@ -7,17 +7,18 @@
                 </v-card-title>
                 <v-card-text>
                     <v-form>
-                        <v-text-field :rules="[validateNotNull]" label="E-mail" required variant="outlined"
-                            type="email"></v-text-field>
+                        <v-text-field :rules="[validateNotNull, validateEmail]" label="E-mail"
+                            v-model="formUserLogin.email" required variant="outlined" type="email"></v-text-field>
                         <v-text-field :rules="[validateNotNull]"
-                            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" v-model="formUserLogin.password"
                             :type="visible ? 'text' : 'password'" placeholder="Senha" variant="outlined"
                             @click:append-inner="visible = !visible"></v-text-field>
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn class="text-none border" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }">Entrar</v-btn>
+                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
+                        :disabled="!isFormValid">Entrar</v-btn>
                     <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
@@ -36,15 +37,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router"
-import { validateNotNull } from '@/utils.js/validation';
+import { validateNotNull, validateEmail } from '@/utils.js/validation';
 const visible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
 
+const formUserLogin = ref({
+    email: '',
+    password: ''
+});
 
+const isFormValid = computed(() => formUserLogin.value.email.trim() !== '' && formUserLogin.value.password.trim() !== '');
 
 </script>
 
