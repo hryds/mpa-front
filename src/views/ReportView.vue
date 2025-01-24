@@ -126,8 +126,8 @@
                                         <v-text>
                                             <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')' }}</span>
                                         </v-text>
-                                        <v-text-field label="Kg" variant="outlined" type="number" :min="0"
-                                            v-model="dados[especie.id][idx]"></v-text-field>
+                                        <v-text-field variant="outlined" type="number" :min="0"
+                                            v-model="dados[especie.id][idx]" :rules="[validatePeso]"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -157,12 +157,44 @@
                         :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
+
+        <v-dialog v-model="successDialog" max-width="600">
+            <v-card>
+                <v-card-title class="text-h5">Sucesso</v-card-title>
+                <v-card-text>
+                    Relatório de Produção enviado.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }"
+                        @click="closeSuccessDialog">Fechar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="errorDialog" max-width="600">
+            <v-card>
+                <v-card-title class="text-h5">Erro</v-card-title>
+                <v-card-text>
+                    Erro ao salvar Relatório de Produção. Por favor, tente novamente.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="closeErrorDialog">Tentar
+                        Novamente</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
     </v-app>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { validateNotNull, validateRGP } from '@/utils.js/validation';
+import { validateNotNull, validateRGP, validatePeso } from '@/utils.js/validation';
 import { useRoute, useRouter } from "vue-router"
 import APICalls from '@/services/APICalls';
 
@@ -170,6 +202,20 @@ const sessionUserId = ref(1);
 const producaoId = ref(1);
 const reportId = ref(1);
 const embarcacoesId = ref([]);
+
+const successDialog = ref(false);
+const errorDialog = ref(false);
+
+const closeSuccessDialog = () => {
+    successDialog.value = false;
+    router.push('/reportar-producao');
+};
+
+const closeErrorDialog = () => {
+    errorDialog.value = false;
+    initializeDados();
+};
+
 
 const dados = ref({});
 
@@ -192,6 +238,8 @@ const visible = ref(false)
 const userData = ref('')
 const route = useRoute()
 const router = useRouter()
+
+
 
 const especiesData = ref([]); const loadEspecies = async () => {
     try {
@@ -330,7 +378,10 @@ const saveReport = async () => {
                             const response = await APICalls.createProducaoEmbarcacaoEspecie(formReportProducaoData.value);
                             reportId.value = response.data?.producaoEmbarcacaoEspecie?.id;
                             console.log(`Report criado com ID = ${reportId.value}`);
+
+                            successDialog.value = true;
                         } catch (error) {
+                            errorDialog.value = true;
                             console.log(error)
                         }
                     }
@@ -339,8 +390,6 @@ const saveReport = async () => {
                 console.log('Nenhuma embarcação associada.');
             }
         });
-
-
     } catch (error) {
         console.error('Erro ao salvar o relatório de produção:', error);
     }

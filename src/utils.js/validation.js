@@ -50,3 +50,14 @@ export const validateCEP = (value) => {
     }
     return true;
 };
+
+export const validatePeso = (value) => {
+    const pesoRegex = /^\d+([.,]\d+)?$|null/;
+    console.log(value)
+    if (!pesoRegex.test(value)) {
+        return "Formato Inválido";
+    }
+    return true;
+    
+};
+
