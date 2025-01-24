@@ -4,8 +4,20 @@ import { ref } from 'vue';
 import APICalls from '@/services/APICalls';
 
 const usersData = ref('')
+const producoesData = ref('');
 const userData = ref('')
 
+const loadConsultas = async () => {
+  try {
+    const response = await APICalls.getConsultas(1);
+    producoesData.value = response.data.producoes
+    console.log(producoesData.value)
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+loadConsultas()
 
 const loadUsers = async () => {
   try {
@@ -17,7 +29,7 @@ const loadUsers = async () => {
   }
 }
 
-loadUsers()
+//loadUsers()
 
 const loadUser = async (id) => {
   try {
@@ -29,7 +41,7 @@ const loadUser = async (id) => {
   }
 };
 
-loadUser(1);
+//loadUser(1);
 const createEspecie = () => {
   axios.post(
     'http://localhost:3000/especies',
@@ -78,13 +90,14 @@ const salvarUsuario = async () => {
 
 
 
+
 </script>
 
 <template>
   <main>
     <div>
       <div v-if="usersData">
-        <p><strong>Usuários</strong> {{ usersData }}</p>
+        <p><strong>Dados</strong> {{ producoesData }}</p>
 
       </div>
     </div>

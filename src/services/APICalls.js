@@ -33,6 +33,9 @@ export default {
     },
     createProducaoEmbarcacaoEspecie(formReportProducaoData) {
         return API().post('/producaoEmbarcacaoEspecies', formReportProducaoData);
+    },
+    getConsultas(id) {
+        return API().get(`/consultas/${id}`)
     }
 
 }
