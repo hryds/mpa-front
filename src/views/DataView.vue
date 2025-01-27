@@ -27,11 +27,12 @@
                             <h4>Data Final do Lote: {{ new Date(producao.dataFinal +
                                 'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
                             <div class="mb-5"></div>
-                            <v-data-table class="d-flex align-center" :headers="headers" :items-per-page="5" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
-                                especie: item.especie?.nomeComum,
-                                embarcacao: item.embarcacao?.rgp,
-                                peso: item.peso
-                            }))" item-value="id"></v-data-table>
+                            <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
+                                :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
+                                    especie: item.especie?.nomeComum,
+                                    embarcacao: item.embarcacao?.rgp,
+                                    peso: `${item.peso} kg`
+                                }))" item-value="id"></v-data-table>
                         </div>
                     </div>
                     <div v-else>
