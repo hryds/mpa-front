@@ -19,9 +19,8 @@
             Usuários</v-list-item>
         </v-list>
         <v-container color="#212c3a">
-          <v-btn @click="router.push(`/`)" class="text-none border-md elevated" v-if="isAuthenticated"
-            prepend-icon="mdi-logout" rounded="xs" elevation="3"
-            :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Sair</v-btn>
+          <v-btn v-if="isAuthenticated" class="text-none border-md elevated" prepend-icon="mdi-logout" rounded="xs"
+            elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="logoutUser">Sair</v-btn>
         </v-container>
       </v-navigation-drawer>
 
@@ -48,12 +47,13 @@
 
 <script setup>
 import logo from '@/assets/logo.png'
-import { ref } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import HomeView from './views/AdminDataView.vue';
 import RegistrationView from './views/RegistrationView.vue';
 import LoginView from './views/LoginView.vue';
 import DataView from './views/DataView.vue';
 import ReportView from './views/ReportView.vue';
+import APICalls from './services/APICalls';
 import { RouterView, RouterLink } from 'vue-router';
 import { useRoute, useRouter } from "vue-router"
 const isDrawerOpen = ref(false)
@@ -61,8 +61,21 @@ const route = useRoute()
 const router = useRouter()
 
 
-const isAuthenticated = ref(true);
+const isAuthenticated = ref(localStorage.getItem('isAuthenticated') === 'false');
 
+watchEffect(() => {
+  isAuthenticated.value = localStorage.getItem('isAuthenticated') === 'true';
+});
+const logoutUser = async () => {
+  try {
+    const response = await APICalls.logOut();
+    localStorage.setItem('isAuthenticated', 'false');
+    isAuthenticated.value = false;
+    router.push(`/`)
+  } catch (error) {
+    console.error('Erro durante o logout:', error.response?.data || error.message);
+  }
+};
 
 </script>
 

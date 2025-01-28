@@ -50,7 +50,7 @@ import { useRouter } from "vue-router";
 import APICalls from '@/services/APICalls';
 
 const router = useRouter();
-const sessionUserId = ref(1);
+const sessionUserId = localStorage.getItem('sessionUserId');
 const producoesData = ref([]);
 
 const headers = ref([
@@ -61,13 +61,13 @@ const headers = ref([
 
 
 const loadConsultas = async () => {
+    console.log(sessionUserId)
     try {
 
-        const response = await APICalls.getConsultas(sessionUserId.value);
+        const response = await APICalls.getConsultas(sessionUserId);
 
 
         producoesData.value = response.data.producoes;
-
         console.log(producoesData.value);
     } catch (error) {
         console.error("Erro ao carregar dados de produção:", error);

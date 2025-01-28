@@ -153,8 +153,8 @@
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isReportFormValid ? { opacity: 0.7 } : {} ]" @click="saveReport"
-                        :disabled="!isReportFormValid">Enviar</v-btn>
+                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isReportFormValid ? { opacity: 0.7 } : {}]"
+                        @click="saveReport" :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
 
@@ -198,13 +198,15 @@ import { validateNotNull, validateRGP, validatePeso } from '@/utils.js/validatio
 import { useRoute, useRouter } from "vue-router"
 import APICalls from '@/services/APICalls';
 
-const sessionUserId = ref(1);
+const sessionUserId = localStorage.getItem('sessionUserId');
 const producaoId = ref(1);
 const reportId = ref(1);
 const embarcacoesId = ref([]);
 
 const successDialog = ref(false);
 const errorDialog = ref(false);
+
+
 
 const closeSuccessDialog = () => {
     successDialog.value = false;
@@ -301,7 +303,7 @@ const loadUser = async (id) => {
     }
 };
 
-loadUser(1);
+loadUser(sessionUserId);
 
 var currentDate = new Date();
 
@@ -350,7 +352,7 @@ const saveReport = async () => {
 
         const payload = {
             ...formReportDateData.value,
-            userId: sessionUserId.value,
+            userId: sessionUserId,
             embarcacoes: embarcacoesId.value,
         };
 
@@ -394,7 +396,6 @@ const saveReport = async () => {
         console.error('Erro ao salvar o relatório de produção:', error);
     }
 };
-
 
 
 const isReportFormValid = computed(() => {

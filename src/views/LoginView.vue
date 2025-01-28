@@ -18,7 +18,7 @@
                 <v-card-actions>
                     <v-btn class="text-none border" rounded="xs" elevation="2"
                         :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
-                        :disabled="!isFormValid">Entrar</v-btn>
+                        :disabled="!isFormValid" @click="loginUser">Entrar</v-btn>
                     <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
@@ -40,6 +40,8 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router"
 import { validateNotNull, validateEmail } from '@/utils.js/validation';
+import APICalls from '@/services/APICalls';
+
 const visible = ref(false)
 
 const route = useRoute()
@@ -51,6 +53,22 @@ const formUserLogin = ref({
 });
 
 const isFormValid = computed(() => formUserLogin.value.email.trim() !== '' && formUserLogin.value.password.trim() !== '');
+
+const loginUser = async () => {
+    try {
+        const response = await APICalls.auth(formUserLogin.value);
+        console.log('Resposta do backend:', response.data);
+        console.log('Access Token:', response.data.accessToken);
+        console.log('ID do Usuário:', response.data.foundId);
+
+        localStorage.setItem('sessionUserId', response.data.foundId);
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('isAuthenticated', true);
+        router.push(`/reportar-producao`);
+    } catch (error) {
+        console.error('Erro durante o login:', error.response?.data || error.message);
+    }
+};
 
 </script>
 

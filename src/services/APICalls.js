@@ -29,13 +29,19 @@ export default {
         return API().post('/embarcacoes', formReportEmbarcacaoData);
     },
     getEspecies() {
-        return API().get('/especies')
+        return API().get('/especies');
     },
     createProducaoEmbarcacaoEspecie(formReportProducaoData) {
         return API().post('/producaoEmbarcacaoEspecies', formReportProducaoData);
     },
     getConsultas(id) {
-        return API().get(`/consultas/${id}`)
+        return API().get(`/consultas/${id}`);
+    },
+    auth(formLoginData) {
+        return API().post('/auth', formLoginData);
+    },
+    logOut() {
+        return API().get('/logout');
     }
 
 }
