@@ -33,6 +33,23 @@
                 </v-card-actions>
             </v-card>
         </v-container>
+
+        <v-dialog v-model="showErrorModal" max-width="600">
+            <v-card>
+                <v-card-title class="text-h5">
+                    Erro no Login
+                </v-card-title>
+                <v-card-text>
+                    {{ loginErrorMessage }}
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="showErrorModal = false">Tentar
+                        Novamente</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </v-app>
 </template>
 
@@ -46,6 +63,9 @@ const visible = ref(false)
 
 const route = useRoute()
 const router = useRouter()
+
+const showErrorModal = ref(false);
+const loginErrorMessage = ref('');
 
 const formUserLogin = ref({
     email: '',
@@ -67,6 +87,8 @@ const loginUser = async () => {
         router.push(`/reportar-producao`);
     } catch (error) {
         console.error('Erro durante o login:', error.response?.data || error.message);
+        loginErrorMessage.value = error.response?.data?.message || "Ocorreu um erro ao tentar fazer login.";
+        showErrorModal.value = true;
     }
 };
 
