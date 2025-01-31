@@ -11,9 +11,8 @@
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-download"
             @click="router.push(`/extracao-dados`)">Extração de
             Dados</v-list-item>
-          <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-account-group"
-            @click="router.push(`/gerenciar-usuarios`)">Gerenciar
-            Usuários</v-list-item>
+          <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-account-edit"
+            @click="router.push(`/gerenciar-conta`)">Gerenciamento de Conta</v-list-item>
         </v-list>
         <v-container color="#212c3a">
           <v-btn v-if="isAuthenticated" class="text-none border-md elevated" prepend-icon="mdi-logout" rounded="xs"

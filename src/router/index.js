@@ -5,6 +5,7 @@ import RegistrationView from '@/views/RegistrationView.vue'
 import DataView from '@/views/DataView.vue'
 import UserManagementView from '@/views/UserManagementView.vue'
 import AdminDataView from '@/views/AdminDataView.vue'
+import AccountView from '@/views/AccountView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +14,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: LoginView,
+    },
+    {
+      path: '/gerenciar-conta',
+      name: 'gerenciar-conta',
+      component: AccountView,
     },
     {
       path: '/extracao-dados-admin',
