@@ -10,34 +10,48 @@
                     </v-tooltip>
                     Extração de Dados
                 </v-card-title>
-                <v-card-actions>
-                    <v-btn class="text-none border" prepend-icon="mdi-download" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
-                        Baixar Dados de Produção
-                    </v-btn>
-                </v-card-actions>
 
                 <v-card-text>
-                    <div v-if="producoesData.length">
-                        <div v-for="(producao, index) in producoesData" :key="producao.id" class="borda-producao">
-                            <h3 class="mb-2" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
-                            <h4>Data Inicial do Lote: {{ new Date(producao.dataInicial +
-                                'T00:00:00').toLocaleDateString('pt-BR') }}
-                            </h4>
-                            <h4>Data Final do Lote: {{ new Date(producao.dataFinal +
-                                'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
-                            <div class="mb-5"></div>
-                            <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
-                                :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
-                                    especie: item.especie?.nomeComum,
-                                    embarcacao: item.embarcacao?.rgp,
-                                    peso: `${item.peso} kg`
-                                }))" item-value="id"></v-data-table>
+                    <v-card v-if="!hasAccess" variant="flat">
+                        <v-card-title class="text-h5">Acesso Restrito</v-card-title>
+                        <v-card-text>
+                            <p>É necessário fazer login para acessar esta página.</p>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
+                                :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                                Ir para Login
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+
+                    <template v-else>
+                        <v-btn class="text-none border" prepend-icon="mdi-download" rounded="xs" elevation="2"
+                            :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
+                            Baixar Dados de Produção
+                        </v-btn>
+
+                        <div v-if="producoesData.length">
+                            <div v-for="(producao, index) in producoesData" :key="producao.id" class="borda-producao">
+                                <h3 class="mb-2" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
+                                <h4>Data Inicial do Lote: {{ new Date(producao.dataInicial +
+                                    'T00:00:00').toLocaleDateString('pt-BR') }}
+                                </h4>
+                                <h4>Data Final do Lote: {{ new Date(producao.dataFinal +
+                                    'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
+                                <div class="mb-5"></div>
+                                <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
+                                    :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
+                                        especie: item.especie?.nomeComum,
+                                        embarcacao: item.embarcacao?.rgp,
+                                        peso: `${item.peso} kg`
+                                    }))" item-value="id"></v-data-table>
+                            </div>
                         </div>
-                    </div>
-                    <div v-else>
-                        <p>Carregando dados de produção...</p>
-                    </div>
+                        <div v-else>
+                            <p>Carregando dados de produção...</p>
+                        </div>
+                    </template>
                 </v-card-text>
             </v-card>
         </v-container>
@@ -52,7 +66,7 @@ import APICalls from '@/services/APICalls';
 const router = useRouter();
 const sessionUserId = localStorage.getItem('sessionUserId');
 const producoesData = ref([]);
-
+const hasAccess = ref(true);
 const headers = ref([
     { title: 'Espécie', value: 'especie' },
     { title: 'Embarcação (RGP)', value: 'embarcacao' },
@@ -61,19 +75,20 @@ const headers = ref([
 
 
 const loadConsultas = async () => {
-    console.log(sessionUserId)
     try {
-
         const response = await APICalls.getConsultas(sessionUserId);
-
-
-        producoesData.value = response.data.producoes;
-        console.log(producoesData.value);
+        if (response.status === 200) {
+            producoesData.value = response.data.producoes;
+            hasAccess.value = true;
+        }
     } catch (error) {
-        console.error("Erro ao carregar dados de produção:", error);
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            hasAccess.value = false;
+        } else {
+            console.error("Erro inesperado:", error);
+        }
     }
 };
-
 
 onMounted(() => {
     loadConsultas();

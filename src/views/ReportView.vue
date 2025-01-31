@@ -10,11 +10,24 @@
                     </v-tooltip>
                     Reportar Produção
                 </v-card-title>
+                <v-card-text v-if="!hasAccess">
+                    <v-card-title class="text-h5">Acesso Restrito</v-card-title>
+                    <v-card-text>
+                        <p>É necessário fazer login para acessar esta página.</p>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
+                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            Ir para Login
+                        </v-btn>
+                    </v-card-actions>
+                </v-card-text>
             </v-card>
         </v-container>
-        <v-container outlined>
+
+        <v-container outlined v-if="hasAccess">
             <v-card color="#00a65a">
-                <v-card-title class="text-h5 ">
+                <v-card-title class="text-h5">
                     Informações de Acesso
                 </v-card-title>
             </v-card>
@@ -30,7 +43,7 @@
             </v-card>
         </v-container>
 
-        <v-container outlined>
+        <v-container v-if="hasAccess" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Período do Lote
@@ -54,8 +67,7 @@
             </v-card>
         </v-container>
 
-
-        <v-container outlined>
+        <v-container v-if="hasAccess" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Embarcações
@@ -99,8 +111,7 @@
             </v-card>
         </v-container>
 
-
-        <v-container outlined>
+        <v-container v-if="hasAccess" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Espécies Comercializadas Por Embarcação (Kg)
@@ -137,8 +148,7 @@
             </v-card>
         </v-container>
 
-
-        <v-container outlined>
+        <v-container v-if="hasAccess" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Anexar Nota Fiscal
@@ -149,7 +159,7 @@
             </v-card>
         </v-container>
 
-        <v-container>
+        <v-container v-if="hasAccess">
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
@@ -187,10 +197,9 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-
     </v-app>
 </template>
+
 
 <script setup>
 import { ref, computed } from 'vue';
@@ -205,6 +214,7 @@ const embarcacoesId = ref([]);
 
 const successDialog = ref(false);
 const errorDialog = ref(false);
+const hasAccess = ref(true);
 
 
 
@@ -246,11 +256,18 @@ const router = useRouter()
 const especiesData = ref([]); const loadEspecies = async () => {
     try {
         const response = await APICalls.getEspecies()
-        especiesData.value = response.data.especies
-        initializeDados();
-        console.log(especiesData.value)
+        if (response.status === 200) {
+            especiesData.value = response.data.especies
+            initializeDados();
+            console.log(especiesData.value)
+            hasAccess.value = true;
+        }
     } catch (error) {
-        console.error(error);
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            hasAccess.value = false;
+        } else {
+            console.error("Erro inesperado:", error);
+        }
     }
 }
 
@@ -296,10 +313,17 @@ const removeEmbarcacao = (index) => {
 const loadUser = async (id) => {
     try {
         const response = await APICalls.getUser(id);
-        userData.value = response.data.user;
-        console.log(userData.value);
+        if (response.status === 200) {
+            userData.value = response.data.user;
+            console.log(userData.value);
+            hasAccess.value = true;
+        }
     } catch (error) {
-        console.error(error);
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            hasAccess.value = false;
+        } else {
+            console.error("Erro inesperado:", error);
+        }
     }
 };
 

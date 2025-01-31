@@ -42,6 +42,9 @@ export default {
     },
     logOut() {
         return API().get('/logout');
+    },
+    refreshToken() {
+        return API().get('/refresh')
     }
 
 }
