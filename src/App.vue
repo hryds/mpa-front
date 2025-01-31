@@ -11,9 +11,6 @@
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-download"
             @click="router.push(`/extracao-dados`)">Extração de
             Dados</v-list-item>
-          <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-download"
-            @click="router.push(`/extracao-dados-admin`)">Extração de
-            Dados - Administrador </v-list-item>
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-account-group"
             @click="router.push(`/gerenciar-usuarios`)">Gerenciar
             Usuários</v-list-item>

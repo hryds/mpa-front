@@ -26,9 +26,16 @@
                     </v-card>
 
                     <template v-else>
-                        <v-btn class="text-none border" prepend-icon="mdi-download" rounded="xs" elevation="2"
+                        <v-btn v-if="userInfo.tipo !== 'admin'" class="text-none border mb-8"
+                            prepend-icon="mdi-download" rounded="xs" elevation="2"
                             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                             Baixar Dados de Produção
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border" prepend-icon="mdi-arrow-right"
+                            @click="router.push(`/extracao-dados-admin`)" rounded="xs" elevation="2"
+                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            Ir para Extração de Dados - Visão de Administrador
                         </v-btn>
 
                         <div v-if="producoesData.length">
@@ -48,9 +55,6 @@
                                     }))" item-value="id"></v-data-table>
                             </div>
                         </div>
-                        <div v-else>
-                            <p>Carregando dados de produção...</p>
-                        </div>
                     </template>
                 </v-card-text>
             </v-card>
@@ -66,6 +70,7 @@ import APICalls from '@/services/APICalls';
 const router = useRouter();
 const sessionUserId = localStorage.getItem('sessionUserId');
 const producoesData = ref([]);
+const userInfo = ref('');
 const hasAccess = ref(true);
 const headers = ref([
     { title: 'Espécie', value: 'especie' },
@@ -90,7 +95,20 @@ const loadConsultas = async () => {
     }
 };
 
+const loadUserInfo = async () => {
+    try {
+        const response = await APICalls.getUser(sessionUserId);
+        if (response.status === 200) {
+            userInfo.value = response.data.user;
+            console.log(userInfo.value.tipo)
+        }
+    } catch (error) {
+        console.error("Erro ao carregar informações do usuário:", error);
+    }
+};
+
 onMounted(() => {
+    loadUserInfo();
     loadConsultas();
 });
 </script>
