@@ -24,8 +24,18 @@
                             </v-btn>
                         </v-card-actions>
                     </v-card>
+
+                    <template v-else>
+                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border" prepend-icon="mdi-arrow-right"
+                            @click="router.push(`/gerenciar-usuarios`)" rounded="xs" elevation="2"
+                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            Ir para Gerenciamento de Usuários - Visão de Administrador
+                        </v-btn>
+                    </template>
                 </v-card-text>
             </v-card>
+
+
         </v-container>
 
         <v-container v-if="hasAccess">
@@ -80,7 +90,7 @@
                 </v-card-text>
             </v-card>
         </v-container>
-        <v-dialog v-model="confirmDialog" max-width="500px">
+        <v-dialog v-model="confirmDialog" max-width="600px">
             <v-card>
                 <v-card-title class="text-h5">Confirmar Alterações</v-card-title>
                 <v-card-text>
@@ -96,6 +106,7 @@
                         :style="{ backgroundColor: '#ff7b7b', color: 'black' }" @click="confirmDialog = false">
                         Cancelar
                     </v-btn>
+                    <v-spacer></v-spacer>
                     <v-btn class="text-none border" rounded="xs" elevation="4"
                         :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="confirmSave">
                         Confirmar

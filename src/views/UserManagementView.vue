@@ -44,9 +44,37 @@
                         :style="[{ backgroundColor: '#ff7b7b', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="openModal">Deletar
                         Selecionados</v-btn>
+                    <v-btn class="text-none border" prepend-icon="mdi-shield-remove" rounded="xs" elevation="2"
+                        :style="[{ backgroundColor: '#ff7b7b', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                        :disabled="isDisabled" @click="removeUserAdmin">Remover Administrador</v-btn>
+                    <v-btn class="text-none border" prepend-icon="mdi-security" rounded="xs" elevation="2"
+                        :style="[{ backgroundColor: '#5775FA', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                        :disabled="isDisabled" @click="makeUserAdmin">Tornar Administrador</v-btn>
                 </v-card-actions>
             </v-card>
         </v-container>
+
+
+        <v-dialog v-model="showModal" max-width="600">
+            <v-card>
+                <v-card-title class="text-h5">
+                    Confirmação de Exclusão
+                </v-card-title>
+                <v-card-text>
+                    Tem certeza que deseja excluir o(s) usuário(s) {{ selected }}? A operação não poderá ser desfeita
+                    após a confirmação.
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#ffbaba', color: 'black' }" text
+                        @click="closeModal">Cancelar</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" text
+                        @click="deleteUsers">Prosseguir</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -56,6 +84,7 @@ import { useRoute, useRouter } from "vue-router";
 import APICalls from '@/services/APICalls';
 
 const router = useRouter();
+const showModal = ref(false);
 const usersData = ref([]);
 const selected = ref([]);
 const hasAccess = ref(true);
@@ -113,4 +142,54 @@ const rejectUsers = async () => {
         console.error(error);
     }
 };
+
+const makeUserAdmin = async () => {
+    try {
+        for (const userId of selected.value) {
+            await APICalls.updateUserType(userId, { tipo: 'admin' });
+        }
+        selected.value = [];
+        loadUsers();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const removeUserAdmin = async () => {
+    try {
+        for (const userId of selected.value) {
+            await APICalls.updateUserType(userId, { tipo: 'comum' });
+        }
+        selected.value = [];
+        loadUsers();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+
+const openModal = () => {
+    showModal.value = true;
+}
+
+const closeModal = () => {
+    showModal.value = false;
+}
+
+const deleteUsers = async () => {
+    closeModal()
+    try {
+        for (const userId of selected.value) {
+            console.log(`Deletado: ${userId}`);
+            await APICalls.deleteUser(userId);
+        }
+        selected.value = [];
+        loadUsers()
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+
+
 </script>

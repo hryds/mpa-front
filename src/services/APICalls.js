@@ -13,6 +13,9 @@ export default {
     updateUserStatus(id, statusData) {
         return API().patch(`/users/updatestatus/${id}`, statusData);
     },
+    updateUserType(id, typeData) {
+        return API().patch(`/users/updatetype/${id}`, typeData);
+    },
     createUser(formUserRegisterData) {
         return API().post('/users', formUserRegisterData);
     },
