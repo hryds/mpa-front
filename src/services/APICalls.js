@@ -7,6 +7,9 @@ export default {
     getUser(id) {
         return API().get(`/users/${id}`);
     },
+    updateUserNoPassword(id, updatedData) {
+        return API().patch(`/users/${id}`, updatedData);
+    },
     updateUserStatus(id, statusData) {
         return API().patch(`/users/updatestatus/${id}`, statusData);
     },
