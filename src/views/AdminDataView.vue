@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container>
+    <v-container v-if="isAdmin">
       <v-card outlined>
         <v-card-title class="text-h5">
           <v-tooltip text="Voltar">
@@ -34,19 +34,15 @@
             <div v-if="producoesData.length">
               <div v-for="(producaoPorUsuario, index) in producoesData" :key="producaoPorUsuario.userId"
                 class="borda-producao">
-                <h2 class="mb-6" style="text-align: center;">Mapas de Produção de Usuário {{ producaoPorUsuario.userId }}
-                </h2>
+                <h2 class="mb-6" style="text-align: center;">Mapas de Produção de Usuário {{ producaoPorUsuario.userId
+                  }}</h2>
                 <div v-if="producaoPorUsuario.producoes.length">
                   <div v-for="(producao, index) in producaoPorUsuario.producoes" :key="producao.id"
                     class="borda-producao">
                     <h3 class="mb-2" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
-                    <h4>
-                      Data Inicial do Lote:
-                      {{ new Date(producao.dataInicial + 'T00:00:00').toLocaleDateString('pt-BR') }}
-                    </h4>
-                    <h4>
-                      Data Final do Lote:
-                      {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR') }}
+                    <h4>Data Inicial do Lote: {{ new Date(producao.dataInicial +
+                      'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
+                    <h4>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR') }}
                     </h4>
 
                     <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
@@ -54,7 +50,8 @@
                         especie: item.especie?.nomeComum,
                         embarcacao: item.embarcacao?.rgp,
                         peso: `${item.peso} kg`,
-                      }))" item-value="id"></v-data-table>
+                      }))" item-value="id">
+                    </v-data-table>
                   </div>
                 </div>
                 <div v-else>
@@ -69,6 +66,13 @@
         </v-card-text>
       </v-card>
     </v-container>
+
+    <v-container v-else>
+      <v-card outlined>
+        <v-card-title class="text-h5">404 - Página Não Encontrada</v-card-title>
+      </v-card>
+    </v-container>
+    
   </v-app>
 </template>
 
@@ -81,7 +85,10 @@ const router = useRouter();
 const usersData = ref([]);
 const userIds = ref([]);
 const producoesData = ref([]);
-const hasAccess = ref(true); 
+const hasAccess = ref(true);
+const userInfo = ref('');
+const isAdmin = ref(false);
+const sessionUserId = localStorage.getItem('sessionUserId');
 
 const headers = ref([
   { title: "Espécie", value: "especie" },
@@ -122,10 +129,26 @@ const loadConsultas = async () => {
   }
 };
 
+const loadUserInfo = async () => {
+  try {
+    const response = await APICalls.getUser(sessionUserId);
+    if (response.status === 200) {
+      userInfo.value = response.data.user;
+      isAdmin.value = userInfo.value.tipo === "admin";
+      console.log("Tipo de usuário:", userInfo.value.tipo);
+    }
+  } catch (error) {
+    console.error("Erro ao carregar informações do usuário:", error);
+  }
+};
+
 onMounted(async () => {
-  await loadUsers();
-  if (hasAccess.value) {
-    await loadConsultas();
+  await loadUserInfo();
+  if (isAdmin.value) {
+    await loadUsers();
+    if (hasAccess.value) {
+      await loadConsultas();
+    }
   }
 });
 </script>

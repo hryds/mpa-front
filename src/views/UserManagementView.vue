@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-container>
+        <v-container v-if="isAdmin">
             <v-card outlined>
                 <v-card-title class="text-h5">
                     <v-tooltip text="Voltar">
@@ -54,6 +54,12 @@
             </v-card>
         </v-container>
 
+        <v-container v-else>
+            <v-card outlined>
+                <v-card-title class="text-h5">404 - Página Não Encontrada</v-card-title>
+            </v-card>
+        </v-container>
+
 
         <v-dialog v-model="showModal" max-width="600">
             <v-card>
@@ -79,7 +85,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import APICalls from '@/services/APICalls';
 
@@ -87,6 +93,7 @@ const router = useRouter();
 const showModal = ref(false);
 const usersData = ref([]);
 const selected = ref([]);
+const userInfo = ref('');
 const hasAccess = ref(true);
 const headers = ref([
     { title: "ID", value: "id", sortable: true },
@@ -98,6 +105,9 @@ const headers = ref([
     { title: "RGP", value: "rgp", sortable: true },
     { title: "CEP", value: "cep" },
 ]);
+
+const isAdmin = ref(false);
+const sessionUserId = localStorage.getItem('sessionUserId');
 
 const isDisabled = computed(() => selected.value.length === 0);
 
@@ -119,6 +129,12 @@ const loadUsers = async () => {
 
 loadUsers();
 
+onMounted(async () => {
+    await loadUserInfo();
+    if (isAdmin.value) {
+        await loadUsers();
+    }
+});
 const aproveUsers = async () => {
     try {
         for (const userId of selected.value) {
@@ -190,6 +206,19 @@ const deleteUsers = async () => {
     }
 };
 
+
+const loadUserInfo = async () => {
+    try {
+        const response = await APICalls.getUser(sessionUserId);
+        if (response.status === 200) {
+            userInfo.value = response.data.user;
+            isAdmin.value = userInfo.value.tipo === "admin";
+            console.log("Tipo de usuário:", userInfo.value.tipo);
+        }
+    } catch (error) {
+        console.error("Erro ao carregar informações do usuário:", error);
+    }
+};
 
 
 </script>
