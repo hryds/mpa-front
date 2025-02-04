@@ -67,12 +67,19 @@
       </v-card>
     </v-container>
 
-    <v-container v-else>
+    <v-container v-if="loading">
+      <v-card outlined>
+        <v-card-title class="text-h5">Carregando...</v-card-title>
+      </v-card>
+    </v-container>
+
+
+    <v-container v-else-if="!loading && !isAdmin">
       <v-card outlined>
         <v-card-title class="text-h5">404 - Página Não Encontrada</v-card-title>
       </v-card>
     </v-container>
-    
+
   </v-app>
 </template>
 
@@ -88,7 +95,8 @@ const producoesData = ref([]);
 const hasAccess = ref(true);
 const userInfo = ref('');
 const isAdmin = ref(false);
-const sessionUserId = localStorage.getItem('sessionUserId');
+const currentUserID = ref(0);
+const loading = ref(true);
 
 const headers = ref([
   { title: "Espécie", value: "especie" },
@@ -131,7 +139,7 @@ const loadConsultas = async () => {
 
 const loadUserInfo = async () => {
   try {
-    const response = await APICalls.getUser(sessionUserId);
+    const response = await APICalls.getUser(currentUserID.value);
     if (response.status === 200) {
       userInfo.value = response.data.user;
       isAdmin.value = userInfo.value.tipo === "admin";
@@ -142,14 +150,34 @@ const loadUserInfo = async () => {
   }
 };
 
+const getUserID = async () => {
+  try {
+    const response = await APICalls.verifyID();
+    if (response.status === 200) {
+      currentUserID.value = response.data.usersessionid;
+      console.log(currentUserID.value)
+    }
+  } catch (error) {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      console.log(err)
+    } else {
+      console.error("Erro inesperado:", error);
+    }
+  }
+};
+
 onMounted(async () => {
+  await getUserID();
   await loadUserInfo();
+
   if (isAdmin.value) {
     await loadUsers();
     if (hasAccess.value) {
       await loadConsultas();
     }
   }
+
+  loading.value = false; 
 });
 </script>
 

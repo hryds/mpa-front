@@ -51,6 +51,9 @@ export default {
     },
     refreshToken() {
         return API().get('/refresh')
+    },
+    verifyID() {
+        return API().get('/auth')
     }
 
 }

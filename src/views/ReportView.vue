@@ -202,12 +202,11 @@
 
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { validateNotNull, validateRGP, validatePeso } from '@/utils.js/validation';
 import { useRoute, useRouter } from "vue-router"
 import APICalls from '@/services/APICalls';
 
-const sessionUserId = localStorage.getItem('sessionUserId');
 const producaoId = ref(1);
 const reportId = ref(1);
 const embarcacoesId = ref([]);
@@ -250,10 +249,11 @@ const visible = ref(false)
 const userData = ref('')
 const route = useRoute()
 const router = useRouter()
+const currentUserID = ref(0);
 
 
-
-const especiesData = ref([]); const loadEspecies = async () => {
+const especiesData = ref([]); 
+const loadEspecies = async () => {
     try {
         const response = await APICalls.getEspecies()
         if (response.status === 200) {
@@ -271,7 +271,6 @@ const especiesData = ref([]); const loadEspecies = async () => {
     }
 }
 
-loadEspecies()
 
 const formReportDateData = ref({
     "dataInicial": "",
@@ -327,7 +326,29 @@ const loadUser = async (id) => {
     }
 };
 
-loadUser(sessionUserId);
+const getUserID = async () => {
+    try {
+        const response = await APICalls.verifyID();
+        if (response.status === 200) {
+            currentUserID.value = response.data.usersessionid;
+            console.log(currentUserID.value)
+        }
+    } catch (error) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            console.log(err)
+        } else {
+            console.error("Erro inesperado:", error);
+        }
+    }
+};
+
+
+
+onMounted(async() => {
+    await getUserID();
+    loadUser(currentUserID.value);
+    loadEspecies();
+});
 
 var currentDate = new Date();
 
@@ -376,7 +397,7 @@ const saveReport = async () => {
 
         const payload = {
             ...formReportDateData.value,
-            userId: sessionUserId,
+            userId: currentUserID.value,
             embarcacoes: embarcacoesId.value,
         };
 

@@ -143,15 +143,15 @@ const router = useRouter();
 const hasAccess = ref(true);
 const isEditing = ref(false);
 const confirmDialog = ref(false);
-const sessionUserId = localStorage.getItem('sessionUserId');
 const showErrorModal = ref(false);
 const loginErrorMessage = ref('');
 const userInfo = ref({});
 const editedUser = ref({});
+const currentUserID = ref(0);
 
 const loadUserInfo = async () => {
     try {
-        const response = await APICalls.getUser(sessionUserId);
+        const response = await APICalls.getUser(currentUserID.value);
         if (response.status === 200) {
             userInfo.value = response.data.user;
             editedUser.value = { ...response.data.user };
@@ -165,6 +165,23 @@ const loadUserInfo = async () => {
         }
     }
 };
+
+const getUserID = async () => {
+    try {
+        const response = await APICalls.verifyID();
+        if (response.status === 200) {
+            currentUserID.value = response.data.usersessionid;
+            console.log(currentUserID.value)
+        }
+    } catch (error) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            console.log(err)
+        } else {
+            console.error("Erro inesperado:", error);
+        }
+    }
+};
+
 
 const toggleEdit = () => {
     isEditing.value = true;
@@ -182,7 +199,7 @@ const openConfirmDialog = () => {
 const confirmSave = async () => {
     confirmDialog.value = false;
     try {
-        const response = await APICalls.updateUserNoPassword(sessionUserId, editedUser.value);
+        const response = await APICalls.updateUserNoPassword(currentUserID.value, editedUser.value);
         if (response.status === 200) {
             userInfo.value = { ...editedUser.value };
             isEditing.value = false;
@@ -194,7 +211,8 @@ const confirmSave = async () => {
     }
 };
 
-onMounted(() => {
+onMounted(async() => {
+    await getUserID();
     loadUserInfo();
 });
 </script>

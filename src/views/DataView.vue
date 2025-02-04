@@ -68,7 +68,6 @@ import { useRouter } from "vue-router";
 import APICalls from '@/services/APICalls';
 
 const router = useRouter();
-const sessionUserId = localStorage.getItem('sessionUserId');
 const producoesData = ref([]);
 const userInfo = ref('');
 const hasAccess = ref(true);
@@ -77,11 +76,11 @@ const headers = ref([
     { title: 'Embarcação (RGP)', value: 'embarcacao' },
     { title: 'Peso (kg)', value: 'peso' },
 ]);
-
+const currentUserID = ref(0);
 
 const loadConsultas = async () => {
     try {
-        const response = await APICalls.getConsultas(sessionUserId);
+        const response = await APICalls.getConsultas(currentUserID.value);
         if (response.status === 200) {
             producoesData.value = response.data.producoes;
             hasAccess.value = true;
@@ -97,7 +96,7 @@ const loadConsultas = async () => {
 
 const loadUserInfo = async () => {
     try {
-        const response = await APICalls.getUser(sessionUserId);
+        const response = await APICalls.getUser(currentUserID.value);
         if (response.status === 200) {
             userInfo.value = response.data.user;
             console.log(userInfo.value.tipo)
@@ -107,7 +106,26 @@ const loadUserInfo = async () => {
     }
 };
 
-onMounted(() => {
+
+const getUserID = async () => {
+    try {
+        const response = await APICalls.verifyID();
+        if (response.status === 200) {
+            currentUserID.value = response.data.usersessionid;
+            console.log(currentUserID.value)
+        }
+    } catch (error) {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            console.log(err)
+        } else {
+            console.error("Erro inesperado:", error);
+        }
+    }
+};
+
+
+onMounted(async() => {
+    await getUserID();
     loadUserInfo();
     loadConsultas();
 });

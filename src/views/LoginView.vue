@@ -81,7 +81,6 @@ const loginUser = async () => {
         console.log('Access Token:', response.data.accessToken);
         console.log('ID do Usuário:', response.data.foundId);
 
-        localStorage.setItem('sessionUserId', response.data.foundId);
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('isAuthenticated', true);
         router.push(`/reportar-producao`);
