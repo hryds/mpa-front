@@ -55,6 +55,10 @@
                                     }))" item-value="id"></v-data-table>
                             </div>
                         </div>
+
+                        <p v-if="producoesData.length === 0">
+                            Você ainda não tem dados de produção.
+                        </p>
                     </template>
                 </v-card-text>
             </v-card>
@@ -124,7 +128,7 @@ const getUserID = async () => {
 };
 
 
-onMounted(async() => {
+onMounted(async () => {
     await getUserID();
     loadUserInfo();
     loadConsultas();

@@ -37,13 +37,14 @@
                     <span class="font-weight-bold">Email: </span>{{ userData.email }}<br>
                     <span class="font-weight-bold">CNPJ: </span>{{ userData.cnpj }}<br>
                     <span class="font-weight-bold">RGP: </span>{{ userData.rgp }}<br>
+                    <span class="font-weight-bold">Status: </span>{{ userData.status }}<br>
                     <span class="font-weight-bold">Data e Hora de Acesso: </span>{{ formattedDate }} (Horário Padrão de
                     Brasília)<br>
                 </v-card-text>
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess" outlined>
+        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Período do Lote
@@ -67,7 +68,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess" outlined>
+        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Embarcações
@@ -111,7 +112,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess" outlined>
+        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Espécies Comercializadas Por Embarcação (Kg)
@@ -135,7 +136,8 @@
                                     </v-col>
                                     <v-col v-for="(embarcacao, idx) in embarcacoes" :key="idx" cols="2">
                                         <v-text>
-                                            <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')' }}</span>
+                                            <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')'
+                                                }}</span>
                                         </v-text>
                                         <v-text-field variant="outlined" type="number" :min="0"
                                             v-model="dados[especie.id][idx]" :rules="[validatePeso]"></v-text-field>
@@ -148,7 +150,18 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess" outlined>
+        <v-container v-if="userStatus === 'pendente'" outlined>
+            <v-card color="#ffcc03">
+                <v-card-title class="text-h5">
+                    Status Pendente
+                </v-card-title>
+                <v-card-text>
+                    Seu cadastro está pendente. Aguarde aprovação para reportar produção.
+                </v-card-text>
+            </v-card>
+        </v-container>
+
+        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Anexar Nota Fiscal
@@ -159,7 +172,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess">
+        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
@@ -214,6 +227,7 @@ const embarcacoesId = ref([]);
 const successDialog = ref(false);
 const errorDialog = ref(false);
 const hasAccess = ref(true);
+const userStatus = ref('');
 
 
 
@@ -252,7 +266,7 @@ const router = useRouter()
 const currentUserID = ref(0);
 
 
-const especiesData = ref([]); 
+const especiesData = ref([]);
 const loadEspecies = async () => {
     try {
         const response = await APICalls.getEspecies()
@@ -315,6 +329,7 @@ const loadUser = async (id) => {
         if (response.status === 200) {
             userData.value = response.data.user;
             console.log(userData.value);
+            userStatus.value = response.data.user.status;
             hasAccess.value = true;
         }
     } catch (error) {
@@ -344,7 +359,7 @@ const getUserID = async () => {
 
 
 
-onMounted(async() => {
+onMounted(async () => {
     await getUserID();
     loadUser(currentUserID.value);
     loadEspecies();

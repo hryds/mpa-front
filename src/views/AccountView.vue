@@ -211,7 +211,7 @@ const confirmSave = async () => {
     }
 };
 
-onMounted(async() => {
+onMounted(async () => {
     await getUserID();
     loadUserInfo();
 });
