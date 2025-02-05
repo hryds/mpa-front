@@ -2,13 +2,21 @@
     <v-app>
         <v-container>
             <v-card outlined>
-                <v-card-title class="text-h5">
-                    <v-tooltip text="Voltar">
+                <v-card-title class="text-h5 d-flex justify-space-between align-center">
+                    <div class="d-flex align-center">
+                        <v-tooltip text="Voltar">
+                            <template v-slot:activator="{ props }">
+                                <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
+                            </template>
+                        </v-tooltip>
+                        <span class="mx-2">Extração de Dados</span>
+                    </div>
+
+                    <v-tooltip text="Sair" v-if="hasAccess && !loading">
                         <template v-slot:activator="{ props }">
-                            <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
+                            <v-icon v-bind="props" size="28" @click="logoutUser">mdi-logout</v-icon>
                         </template>
                     </v-tooltip>
-                    Extração de Dados
                 </v-card-title>
 
                 <v-card-text>
@@ -26,8 +34,7 @@
                     </v-card>
 
                     <template v-if="hasAccess && !loading">
-                        <v-btn v-if="userInfo.tipo !== 'admin'" class="text-none border mb-8"
-                            prepend-icon="mdi-download" rounded="xs" elevation="2"
+                        <v-btn class="text-none border mb-8" prepend-icon="mdi-download" rounded="xs" elevation="2"
                             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                             Baixar Dados de Produção
                         </v-btn>
@@ -119,16 +126,28 @@ const getUserID = async () => {
         const response = await APICalls.verifyID();
         if (response.status === 200) {
             currentUserID.value = response.data.usersessionid;
-            console.log(currentUserID.value)
         }
     } catch (error) {
         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-            console.log(err)
+            console.log(error);
+            hasAccess.value = false;
         } else {
             console.error("Erro inesperado:", error);
         }
     }
 };
+
+const logoutUser = async () => {
+    try {
+        const response = await APICalls.logOut();
+        localStorage.setItem('isAuthenticated', 'false');
+        localStorage.clear();
+        router.push(`/`)
+    } catch (error) {
+        console.error('Erro durante o logout:', error.response?.data || error.message);
+    }
+};
+
 
 
 onMounted(async () => {

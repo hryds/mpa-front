@@ -2,13 +2,21 @@
   <v-app>
     <v-container v-if="isAdmin">
       <v-card outlined>
-        <v-card-title class="text-h5">
-          <v-tooltip text="Voltar">
+        <v-card-title class="text-h5 d-flex justify-space-between align-center">
+          <div class="d-flex align-center">
+            <v-tooltip text="Voltar">
+              <template v-slot:activator="{ props }">
+                <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
+              </template>
+            </v-tooltip>
+            <span class="mx-2">Extração de Dados</span>
+          </div>
+
+          <v-tooltip text="Sair" v-if="hasAccess && !loading">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" size="24" @click="router.back()">mdi-arrow-left</v-icon>
+              <v-icon v-bind="props" size="28" @click="logoutUser">mdi-logout</v-icon>
             </template>
           </v-tooltip>
-          Extração de Dados
         </v-card-title>
 
         <v-card-text>
@@ -26,7 +34,7 @@
           </v-card>
 
           <template v-else>
-            <v-btn class="text-none border" prepend-icon="mdi-download" rounded="xs" elevation="2"
+            <v-btn class="text-none border mb-6" prepend-icon="mdi-download" rounded="xs" elevation="2"
               :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
               Baixar Dados de Produção
             </v-btn>
@@ -164,6 +172,17 @@ const getUserID = async () => {
     } else {
       console.error("Erro inesperado:", error);
     }
+  }
+};
+
+const logoutUser = async () => {
+  try {
+    const response = await APICalls.logOut();
+    localStorage.setItem('isAuthenticated', 'false');
+    localStorage.clear();
+    router.push(`/`)
+  } catch (error) {
+    console.error('Erro durante o logout:', error.response?.data || error.message);
   }
 };
 
