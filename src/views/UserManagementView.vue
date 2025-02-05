@@ -100,7 +100,7 @@ const showModal = ref(false);
 const usersData = ref([]);
 const selected = ref([]);
 const userInfo = ref('');
-const hasAccess = ref(true);
+const hasAccess = ref(false);
 const headers = ref([
     { title: "ID", value: "id", sortable: true },
     { title: "Nome", value: "nome", sortable: true },

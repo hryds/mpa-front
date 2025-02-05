@@ -44,7 +44,8 @@
                       'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
                     <h4>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR') }}
                     </h4>
-
+                    <h4>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
+                    </h4>
                     <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
                       :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map((item) => ({
                         especie: item.especie?.nomeComum,

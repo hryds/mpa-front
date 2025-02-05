@@ -1,5 +1,6 @@
 <template>
     <v-app>
+
         <v-container>
             <v-card outlined>
                 <v-card-title class="text-h5">
@@ -12,7 +13,7 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-card v-if="!hasAccess" variant="flat">
+                    <v-card v-if="!hasAccess && !loading" variant="flat">
                         <v-card-title class="text-h5">Acesso Restrito</v-card-title>
                         <v-card-text>
                             <p>É necessário fazer login para acessar esta página.</p>
@@ -38,9 +39,15 @@
 
         </v-container>
 
-        <v-container v-if="hasAccess">
+        <v-container v-if="hasAccess && !loading">
             <v-card color="#3b8dbb">
-                <v-card-title class="text-h5">Informações da Conta</v-card-title>
+                <v-card-title class="text-h5 d-flex align-center justify-space-between">Informações da Conta
+                    <v-tooltip text="Editar Informações">
+                        <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props" size="28" @click="toggleEdit">mdi-pencil</v-icon>
+                        </template>
+                    </v-tooltip>
+                </v-card-title>
             </v-card>
 
             <v-card color="white">
@@ -52,13 +59,7 @@
                         <p><span class="font-weight-bold">RGP: </span>{{ userInfo.rgp }}</p>
                         <p><span class="font-weight-bold">CEP: </span>{{ userInfo.cep }}</p>
                         <p><span class="font-weight-bold">Complemento de Endereço: </span>{{ userInfo.complemento }}</p>
-
-                        <v-card-actions class="d-flex mt-4">
-                            <v-btn class="text-none border" prepend-icon="mdi-pencil" rounded="xs" elevation="2"
-                                :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="toggleEdit">
-                                Editar Informações
-                            </v-btn>
-                        </v-card-actions>
+                        <p><span class="font-weight-bold">Status: </span>{{ userInfo.status }}</p>
                     </template>
                     <template v-else>
                         <v-form ref="form">
@@ -130,6 +131,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
     </v-app>
 </template>
 
@@ -140,7 +142,7 @@ import { validateNotNull, validateCNPJ, validateEmail, validateRGP, validateCEP 
 import APICalls from "@/services/APICalls";
 
 const router = useRouter();
-const hasAccess = ref(true);
+const hasAccess = ref(false);
 const isEditing = ref(false);
 const confirmDialog = ref(false);
 const showErrorModal = ref(false);
@@ -148,6 +150,7 @@ const loginErrorMessage = ref('');
 const userInfo = ref({});
 const editedUser = ref({});
 const currentUserID = ref(0);
+const loading = ref(true);
 
 const loadUserInfo = async () => {
     try {
@@ -213,6 +216,7 @@ const confirmSave = async () => {
 
 onMounted(async () => {
     await getUserID();
-    loadUserInfo();
+    await loadUserInfo();
+    loading.value = false;
 });
 </script>

@@ -12,7 +12,7 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-card v-if="!hasAccess" variant="flat">
+                    <v-card v-if="!hasAccess && !loading" variant="flat">
                         <v-card-title class="text-h5">Acesso Restrito</v-card-title>
                         <v-card-text>
                             <p>É necessário fazer login para acessar esta página.</p>
@@ -25,16 +25,16 @@
                         </v-card-actions>
                     </v-card>
 
-                    <template v-else>
+                    <template v-if="hasAccess && !loading">
                         <v-btn v-if="userInfo.tipo !== 'admin'" class="text-none border mb-8"
                             prepend-icon="mdi-download" rounded="xs" elevation="2"
                             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                             Baixar Dados de Produção
                         </v-btn>
                         <v-spacer></v-spacer>
-                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border" prepend-icon="mdi-arrow-right"
-                            @click="router.push(`/extracao-dados-admin`)" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border mb-4"
+                            prepend-icon="mdi-arrow-right" @click="router.push(`/extracao-dados-admin`)" rounded="xs"
+                            elevation="2" :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
                             Ir para Extração de Dados - Visão de Administrador
                         </v-btn>
 
@@ -46,6 +46,8 @@
                                 </h4>
                                 <h4>Data Final do Lote: {{ new Date(producao.dataFinal +
                                     'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
+                                <h4>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
+                                </h4>
                                 <div class="mb-5"></div>
                                 <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
                                     :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
@@ -74,13 +76,14 @@ import APICalls from '@/services/APICalls';
 const router = useRouter();
 const producoesData = ref([]);
 const userInfo = ref('');
-const hasAccess = ref(true);
+const hasAccess = ref(false);
 const headers = ref([
     { title: 'Espécie', value: 'especie' },
     { title: 'Embarcação (RGP)', value: 'embarcacao' },
     { title: 'Peso (kg)', value: 'peso' },
 ]);
 const currentUserID = ref(0);
+const loading = ref(true);
 
 const loadConsultas = async () => {
     try {
@@ -132,6 +135,7 @@ onMounted(async () => {
     await getUserID();
     loadUserInfo();
     loadConsultas();
+    loading.value = false;
 });
 </script>
 

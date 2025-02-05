@@ -10,7 +10,7 @@
                     </v-tooltip>
                     Reportar Produção
                 </v-card-title>
-                <v-card-text v-if="!hasAccess">
+                <v-card-text v-if="!hasAccess && !loading">
                     <v-card-title class="text-h5">Acesso Restrito</v-card-title>
                     <v-card-text>
                         <p>É necessário fazer login para acessar esta página.</p>
@@ -44,7 +44,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
+        <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Período do Lote
@@ -68,7 +68,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
+        <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Embarcações
@@ -112,7 +112,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
+        <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5">
                     Espécies Comercializadas Por Embarcação (Kg)
@@ -150,7 +150,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="userStatus === 'pendente'" outlined>
+        <v-container v-if="userStatus === 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card color="#ffcc03">
                 <v-card-title class="text-h5">
                     Status Pendente
@@ -161,7 +161,18 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
+        <v-container v-if="userStatus === 'rejeitado'" outlined>
+            <v-card color="#ffbaba">
+                <v-card-title class="text-h5">
+                    Status Rejeitado
+                </v-card-title>
+                <v-card-text>
+                    Seu cadastro foi rejeitado. Aguarde aprovação para reportar produção.
+                </v-card-text>
+            </v-card>
+        </v-container>
+
+        <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card color="#3b8dbb">
                 <v-card-title class="text-h5 ">
                     Anexar Nota Fiscal
@@ -172,7 +183,7 @@
             </v-card>
         </v-container>
 
-        <v-container v-if="hasAccess && userStatus !== 'pendente'" outlined>>
+        <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card>
                 <v-card-actions>
                     <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
@@ -226,9 +237,9 @@ const embarcacoesId = ref([]);
 
 const successDialog = ref(false);
 const errorDialog = ref(false);
-const hasAccess = ref(true);
+const hasAccess = ref(false);
 const userStatus = ref('');
-
+const loading = ref(true);
 
 
 const closeSuccessDialog = () => {
@@ -363,6 +374,7 @@ onMounted(async () => {
     await getUserID();
     loadUser(currentUserID.value);
     loadEspecies();
+    loading.value = false;
 });
 
 var currentDate = new Date();
