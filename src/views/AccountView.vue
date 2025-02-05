@@ -91,7 +91,8 @@
                                     Cancelar
                                 </v-btn>
                                 <v-btn class="text-none border" rounded="xs" elevation="4"
-                                    :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="openConfirmDialog">
+                                    :style="{ backgroundColor: '#ddf0c7', color: 'black' }" :disabled="!isFormValid"
+                                    @click="openConfirmDialog">
                                     Salvar
                                 </v-btn>
                             </v-card-actions>
@@ -145,7 +146,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { validateNotNull, validateCNPJ, validateEmail, validateRGP, validateCEP } from "@/utils.js/validation";
 import APICalls from "@/services/APICalls";
@@ -194,6 +195,18 @@ const getUserID = async () => {
     }
 };
 
+const isFormValid = computed(() => {
+    return editedUser.value.nome.trim() !== '' &&
+        editedUser.value.email.trim() !== '' &&
+        editedUser.value.cnpj.trim() !== '' &&
+        editedUser.value.rgp.trim() !== '' &&
+        editedUser.value.cep.trim() !== '' &&
+        validateEmail(editedUser.value.email) === true &&
+        validateCNPJ(editedUser.value.cnpj) === true &&
+        validateRGP(editedUser.value.rgp) === true &&
+        validateCEP(editedUser.value.cep) === true &&
+        editedUser.value.complemento.trim() !== '';
+});
 
 const toggleEdit = () => {
     isEditing.value = true;
@@ -211,6 +224,10 @@ const openConfirmDialog = () => {
 const confirmSave = async () => {
     confirmDialog.value = false;
     try {
+        editedUser.value.rgp = editedUser.value.rgp.toUpperCase();
+        editedUser.value.cnpj = editedUser.value.cnpj.replace(/[^0-9]/g, '');
+        editedUser.value.rgp = editedUser.value.rgp.replace(/[^A-Za-z0-9]/g, '');
+        editedUser.value.cep = editedUser.value.cep.replace(/[^0-9]/g, '');
         const response = await APICalls.updateUserNoPassword(currentUserID.value, editedUser.value);
         if (response.status === 200) {
             userInfo.value = { ...editedUser.value };

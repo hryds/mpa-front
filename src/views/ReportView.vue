@@ -473,8 +473,10 @@ const saveReport = async () => {
                             console.log(`Report criado com ID = ${reportId.value}`);
 
                             successDialog.value = true;
+                            errorDialog.value = false;
                         } catch (error) {
                             errorDialog.value = true;
+                            successDialog.value = false;
                             console.log(error)
                         }
                     }
@@ -488,14 +490,25 @@ const saveReport = async () => {
     }
 };
 
-
 const isReportFormValid = computed(() => {
     const isDateDataValid = Object.values(formReportDateData.value).every(
         (value) => value !== '' && value !== null && value !== undefined
     );
+
+    const isDataInicialBeforeDataFinal = formReportDateData.value.dataInicial && formReportDateData.value.dataFinal
+        ? formReportDateData.value.dataInicial <= formReportDateData.value.dataFinal
+        : true;
+
+    const areAllEmbarcacoesValid = embarcacoes.value.every(embarcacao => {
+        const nomeValido = validateNotNull(embarcacao.nome) === true;
+        const rgpValido = validateRGP(embarcacao.rgp) === true;
+
+        return nomeValido && rgpValido;
+    });
+
     const hasOneEmbarcacao = embarcacoes.value.some(embarcacao => embarcacao.nome && embarcacao.rgp);
 
-    return isDateDataValid && hasOneEmbarcacao;
+    return isDateDataValid && hasOneEmbarcacao && isDataInicialBeforeDataFinal && areAllEmbarcacoesValid;
 });
 
 </script>

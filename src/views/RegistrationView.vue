@@ -105,14 +105,35 @@ const formUserRegisterData = ref({
 });
 
 const isFormValid = computed(() => {
-  return Object.values(formUserRegisterData.value).every(
-    (value) => value !== '' && value !== null && value !== undefined
-  );
+  return Object.entries(formUserRegisterData.value).every(([key, value]) => {
+    if (value === '' || value === null || value === undefined) {
+      return false;
+    }
+    if (key === 'email' && validateEmail(value) !== true) {
+      return false;
+    }
+    if (key === 'cnpj' && validateCNPJ(value) !== true) {
+      return false;
+    }
+    if (key === 'rgp' && validateRGP(value) !== true) {
+      return false;
+    }
+    if (key === 'cep' && validateCEP(value) !== true) {
+      return false;
+    }
+    return true;
+  });
 });
+
 
 
 const saveUser = async () => {
   try {
+    formUserRegisterData.value.rgp = formUserRegisterData.value.rgp.toUpperCase();
+    formUserRegisterData.value.cnpj = formUserRegisterData.value.cnpj.replace(/[^0-9]/g, '');
+    formUserRegisterData.value.rgp = formUserRegisterData.value.rgp.replace(/[^A-Za-z0-9]/g, '');
+    formUserRegisterData.value.cep = formUserRegisterData.value.cep.replace(/[^0-9]/g, '');
+
     const response = await APICalls.createUser(formUserRegisterData.value);
     modalTitle.value = 'Sucesso';
     modalMessage.value = 'Usuário criado com sucesso!';
