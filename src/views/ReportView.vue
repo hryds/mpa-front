@@ -219,7 +219,9 @@
             <v-card>
                 <v-card-title class="text-h5">Erro</v-card-title>
                 <v-card-text>
-                    Erro ao salvar Relatório de Produção. Por favor, tente novamente.
+                    <div class="mb-2">Erro ao salvar Relatório de Produção:</div>
+                    <div class="mb-2" style="color: red;">{{ modalErrorMessage }}</div>
+                    <div>Por favor, tente novamente.</div>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -278,6 +280,8 @@ const valid = ref(true);
 const dataInicial = ref("");
 const dataFinal = ref("");
 const visible = ref(false)
+
+const modalErrorMessage = ref('');
 
 const userData = ref('')
 const route = useRoute()
@@ -428,6 +432,7 @@ const saveReport = async () => {
                         const responseCreate = await APICalls.createEmbarcacao(embarcacao);
                         embarcacao.id = responseCreate.data?.embarcacao?.id;
                         console.log(`Embarcação criada com RGP ${embarcacao.rgp}: ID = ${embarcacao.id}`);
+                        modalErrorMessage.value = error.response?.data?.message || "Erro.";
                     }
                 } else {
                     console.log("Embarcação sem RGP especificado: Não foi possível verificar ou criar.");
@@ -478,6 +483,8 @@ const saveReport = async () => {
                             errorDialog.value = true;
                             successDialog.value = false;
                             console.log(error)
+                            modalErrorMessage.value = error.response?.data?.message || "Ocorreu um erro ao criar o report.";
+
                         }
                     }
                 });

@@ -35,7 +35,8 @@
                     <template v-else>
                         <h5 v-if="selected.length > 0">Selecionados: {{ selected }}</h5>
                         <v-data-table v-model="selected" :headers="headers" :items="usersData" item-key="id" show-select
-                            class="elevation-1">
+                            class="elevation-2 mt-4 mb-4" :items-per-page="50"
+                            :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }">
                         </v-data-table>
                     </template>
                 </v-card-text>
@@ -138,6 +139,7 @@ const loadUsers = async () => {
             hasAccess.value = false;
         } else {
             console.error("Erro inesperado:", error);
+            hasAccess.value = false;
         }
     }
 };

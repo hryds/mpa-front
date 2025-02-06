@@ -191,6 +191,7 @@ const getUserID = async () => {
             hasAccess.value = false;
         } else {
             console.error("Erro inesperado:", error);
+            hasAccess.value = false;
         }
     }
 };

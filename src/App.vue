@@ -1,6 +1,15 @@
 <template>
   <div class="app">
     <v-app>
+      <v-app-bar flat color="#3c8bbc" class="border-b">
+        <v-tooltip text="Menu">
+          <template v-slot:activator="{ props }">
+            <v-app-bar-nav-icon v-bind="props" @click="isDrawerOpen = !isDrawerOpen"></v-app-bar-nav-icon>
+          </template>
+        </v-tooltip>
+        <v-img :src="logo1" max-height="230" max-width="230" contain>
+        </v-img>
+      </v-app-bar>
 
       <v-navigation-drawer class="border" permanent v-model="isDrawerOpen" color="#212c3a">
         <v-list>
@@ -20,15 +29,6 @@
         </v-container>
       </v-navigation-drawer>
 
-      <v-app-bar flat color="#3c8bbc" class="border-b">
-        <v-tooltip text="Menu">
-          <template v-slot:activator="{ props }">
-            <v-app-bar-nav-icon v-bind="props" @click="isDrawerOpen = !isDrawerOpen"></v-app-bar-nav-icon>
-          </template>
-        </v-tooltip>
-        <v-img :src="logo" max-height="150" max-width="150" contain>
-        </v-img>
-      </v-app-bar>
       <v-main>
         <!--<ReportView/>-->
         <!-- <DataView/>-->
@@ -43,6 +43,7 @@
 
 <script setup>
 import logo from '@/assets/logo.png'
+import logo1 from '@/assets/logo1.png'
 import { ref, watch, watchEffect } from 'vue';
 import HomeView from './views/AdminDataView.vue';
 import RegistrationView from './views/RegistrationView.vue';
@@ -52,7 +53,7 @@ import ReportView from './views/ReportView.vue';
 import APICalls from './services/APICalls';
 import { RouterView, RouterLink } from 'vue-router';
 import { useRoute, useRouter } from "vue-router"
-const isDrawerOpen = ref(false)
+const isDrawerOpen = ref(true)
 const route = useRoute()
 const router = useRouter()
 

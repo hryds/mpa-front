@@ -40,7 +40,7 @@
                     Erro no Login
                 </v-card-title>
                 <v-card-text>
-                    {{ loginErrorMessage }}
+                    <div style="color: red;">{{ loginErrorMessage }}</div>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn class="text-none border" rounded="xs" elevation="2"

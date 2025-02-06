@@ -27,7 +27,7 @@
             <v-text-field class="pb-2" v-model="formUserRegisterData.password"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"
               placeholder="Senha" variant="outlined" @click:append-inner="visible = !visible" required
-              :rules="[validateNotNull]"></v-text-field>
+              :rules="[validateNotNull, validatePassword]"></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -69,7 +69,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router"
-import { validateNotNull, validateEmail, validateCNPJ, validateRGP, validateCEP } from '@/utils.js/validation';
+import { validateNotNull, validateEmail, validatePassword, validateCNPJ, validateRGP, validateCEP } from '@/utils.js/validation';
 import APICalls from '@/services/APICalls';
 
 // Modal 
