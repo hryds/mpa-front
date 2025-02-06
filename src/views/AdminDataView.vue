@@ -69,7 +69,6 @@
               </div>
             </div>
             <div v-else>
-              <p>Carregando dados de produção...</p>
             </div>
           </template>
         </v-card-text>
@@ -78,7 +77,7 @@
 
     <v-container v-if="loading">
       <v-card outlined>
-        <v-card-title class="text-h5">Carregando...</v-card-title>
+        <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
       </v-card>
     </v-container>
 

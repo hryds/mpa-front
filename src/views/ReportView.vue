@@ -18,6 +18,7 @@
                         </template>
                     </v-tooltip>
                 </v-card-title>
+                <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
                 <v-card-text v-if="!hasAccess && !loading">
                     <v-card-title class="text-h5">Acesso Restrito</v-card-title>
                     <v-card-text>
@@ -383,8 +384,8 @@ const getUserID = async () => {
 onMounted(async () => {
     loading.value = true;
     await getUserID();
-    loadUser(currentUserID.value);
-    loadEspecies();
+    await loadUser(currentUserID.value);
+    await loadEspecies();
     loading.value = false;
 });
 

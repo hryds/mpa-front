@@ -22,6 +22,7 @@
 
 
                 <v-card-text>
+                    <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
                     <v-card v-if="!hasAccess && !loading" variant="flat">
                         <v-card-title class="text-h5">Acesso Restrito</v-card-title>
                         <v-card-text>
