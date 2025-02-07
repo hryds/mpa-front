@@ -49,16 +49,16 @@
                         :style="[{ backgroundColor: '#ffbaba', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="rejectUsers">Rejeitar
                         Selecionados</v-btn>
-                    <v-btn class="text-none border" prepend-icon="mdi-trash-can" rounded="xs" elevation="2"
+                    <!--<v-btn class="text-none border" prepend-icon="mdi-trash-can" rounded="xs" elevation="2"
                         :style="[{ backgroundColor: '#ff7b7b', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="openModal">Deletar
-                        Selecionados</v-btn>
-                    <v-btn class="text-none border" prepend-icon="mdi-shield-remove" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ff7b7b', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
-                        :disabled="isDisabled" @click="removeUserAdmin">Remover Administrador</v-btn>
+                        Selecionados</v-btn>-->
                     <v-btn class="text-none border" prepend-icon="mdi-security" rounded="xs" elevation="2"
                         :style="[{ backgroundColor: '#5775FA', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="makeUserAdmin">Tornar Administrador</v-btn>
+                    <v-btn class="text-none border" prepend-icon="mdi-shield-remove" rounded="xs" elevation="2"
+                        :style="[{ backgroundColor: '#ffbaba', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                        :disabled="isDisabled" @click="removeUserAdmin">Remover Administrador</v-btn>
                 </v-card-actions>
             </v-card>
         </v-container>

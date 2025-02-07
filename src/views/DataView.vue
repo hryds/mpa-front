@@ -35,7 +35,7 @@
                     </v-card>
 
                     <template v-if="hasAccess && !loading">
-                        <v-btn class="text-none border mb-8" prepend-icon="mdi-download" rounded="xs" elevation="2"
+                        <v-btn class="text-none border mb-8 mt-2" prepend-icon="mdi-download" rounded="xs" elevation="2"
                             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                             Baixar Dados de Produção
                         </v-btn>
@@ -47,22 +47,26 @@
                         </v-btn>
 
                         <div v-if="producoesData.length">
-                            <div v-for="(producao, index) in producoesData" :key="producao.id" class="borda-producao">
-                                <h3 class="mb-2" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
-                                <h4>Data Inicial do Lote: {{ new Date(producao.dataInicial +
-                                    'T00:00:00').toLocaleDateString('pt-BR') }}
-                                </h4>
-                                <h4>Data Final do Lote: {{ new Date(producao.dataFinal +
-                                    'T00:00:00').toLocaleDateString('pt-BR') }}</h4>
-                                <h4>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
-                                </h4>
-                                <div class="mb-5"></div>
-                                <v-data-table class="d-flex align-center" :headers="headers" :hide-default-footer="true"
-                                    :items-per-page="-1" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
-                                        especie: item.especie?.nomeComum,
-                                        embarcacao: item.embarcacao?.rgp,
-                                        peso: `${item.peso} kg`
-                                    }))" item-value="id"></v-data-table>
+                            <div v-for="(producao, index) in producoesData" :key="producao.id" elevation="4">
+                                <div v-if="producao.producaoEmbarcacaoEspecies.length" class="borda-producao">
+                                    <h3 class="mb-6" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
+                                    <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
+                                        'T00:00:00').toLocaleDateString('pt-BR') }}
+                                    </p>
+                                    <p>Data Final do Lote: {{ new Date(producao.dataFinal +
+                                        'T00:00:00').toLocaleDateString('pt-BR') }}</p>
+                                    <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
+                                    </p>
+                                    <div class="mb-10"></div>
+                                    <v-data-table class="d-flex align-center mb-4"
+                                        :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }"
+                                        :headers="headers" :hide-default-footer="true" :items-per-page="-1"
+                                        elevation="2" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
+                                            especie: item.especie?.nomeComum,
+                                            embarcacao: item.embarcacao?.rgp,
+                                            peso: `${item.peso} kg`
+                                        }))" item-value="id"></v-data-table>
+                                </div>
                             </div>
                         </div>
 
@@ -161,9 +165,9 @@ onMounted(async () => {
 
 <style scoped>
 .borda-producao {
-    border: 2px solid #999999;
+    border: 2px solid #95C8D8;
     padding: 10px;
-    margin-bottom: 12px;
-    border-radius: 6px;
+    margin-bottom: 20px;
+    border-radius: 4px;
 }
 </style>

@@ -230,7 +230,17 @@ const confirmSave = async () => {
         editedUser.value.cnpj = editedUser.value.cnpj.replace(/[^0-9]/g, '');
         editedUser.value.rgp = editedUser.value.rgp.replace(/[^A-Za-z0-9]/g, '');
         editedUser.value.cep = editedUser.value.cep.replace(/[^0-9]/g, '');
-        const response = await APICalls.updateUserNoPassword(currentUserID.value, editedUser.value);
+
+        const payload = {
+            nome: editedUser.value.nome,
+            email: editedUser.value.email,
+            cnpj: editedUser.value.cnpj.replace(/[^0-9]/g, ''),
+            rgp: editedUser.value.rgp.toUpperCase().replace(/[^A-Za-z0-9]/g, ''),
+            cep: editedUser.value.cep.replace(/[^0-9]/g, ''),
+            complemento: editedUser.value.complemento
+        };
+
+        const response = await APICalls.updateUserNoPassword(currentUserID.value, payload);
         if (response.status === 200) {
             userInfo.value = { ...editedUser.value };
             isEditing.value = false;
