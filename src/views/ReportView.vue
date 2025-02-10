@@ -188,7 +188,8 @@
                 </v-card-title>
             </v-card>
             <v-card color="white">
-                <v-file-input required v-model="selectedFile" label="Selecionar Arquivos"></v-file-input>
+                <v-file-input required v-model="selectedFile"  persistent-hint hint="Formatos Aceitos: .pdf, .doc, .docx, .png, .odt, .jpg, .xml e .xlsx.   Tamanho máximo: 2MB" show-size accept=".pdf, .doc, .docx, .png, .odt, .jpg, .xml, .xlsx"
+                    label="Selecionar Arquivo"></v-file-input>
             </v-card>
         </v-container>
 
@@ -277,6 +278,9 @@ const initializeDados = () => {
     });
 };
 
+const fileRules = [
+  (value) => !value || value.size < 2 * 1024 * 1024 || 'Tamanho máximo: 2MB',
+]
 
 const valid = ref(true);
 const dataInicial = ref("");
@@ -415,12 +419,14 @@ var formattedDate = new Intl.DateTimeFormat('pt-BR', {
 }).format(currentDate);
 
 
-const uploadFile = async () => {
+const uploadFile = async (producaoId) => {
     if (!selectedFile.value) {
         return;
     }
+    console.log(producaoId)
 
     const formData = new FormData();
+    formData.append("producaoId", producaoId);
     formData.append("file", selectedFile.value);
 
     try {
@@ -476,6 +482,8 @@ const saveReport = async () => {
         producaoId.value = response.data?.producao?.id;
         console.log(`Produção criada com ID = ${producaoId.value}`);
 
+        await uploadFile(producaoId.value);
+
         formReportProducaoData.value.producaoId = producaoId.value;
 
         Object.keys(dados.value).forEach((especieId) => {
@@ -495,8 +503,6 @@ const saveReport = async () => {
                             reportId.value = response.data?.producaoEmbarcacaoEspecie?.id;
                             console.log(`Report criado com ID = ${reportId.value}`);
 
-                            uploadFile();
-
                             successDialog.value = true;
                             errorDialog.value = false;
                         } catch (error) {
@@ -506,6 +512,7 @@ const saveReport = async () => {
                             modalErrorMessage.value = error.response?.data?.message || "Ocorreu um erro ao criar o report.";
 
                         }
+
                     }
                 });
             } else {
