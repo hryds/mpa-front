@@ -188,7 +188,9 @@
                 </v-card-title>
             </v-card>
             <v-card color="white">
-                <v-file-input required v-model="selectedFile"  persistent-hint hint="Formatos Aceitos: .pdf, .doc, .docx, .png, .odt, .jpg, .xml e .xlsx.   Tamanho máximo: 2MB" show-size accept=".pdf, .doc, .docx, .png, .odt, .jpg, .xml, .xlsx"
+                <v-file-input v-model="selectedFile" persistent-hint
+                    hint="Formatos Aceitos: .pdf, .doc, .docx, .png, .odt, .jpg, .xml e .xlsx.   Tamanho máximo: 2MB"
+                    show-size accept=".pdf, .doc, .docx, .png, .odt, .jpg, .xml, .xlsx"
                     label="Selecionar Arquivo"></v-file-input>
             </v-card>
         </v-container>
@@ -278,9 +280,6 @@ const initializeDados = () => {
     });
 };
 
-const fileRules = [
-  (value) => !value || value.size < 2 * 1024 * 1024 || 'Tamanho máximo: 2MB',
-]
 
 const valid = ref(true);
 const dataInicial = ref("");
@@ -542,7 +541,9 @@ const isReportFormValid = computed(() => {
 
     const hasOneEmbarcacao = embarcacoes.value.some(embarcacao => embarcacao.nome && embarcacao.rgp);
 
-    return isDateDataValid && hasOneEmbarcacao && isDataInicialBeforeDataFinal && areAllEmbarcacoesValid;
+    const isFileValid = !selectedFile.value || selectedFile.value.size <= 2 * 1024 * 1024;
+
+    return isDateDataValid && hasOneEmbarcacao && isDataInicialBeforeDataFinal && areAllEmbarcacoesValid && isFileValid;
 });
 
 </script>
