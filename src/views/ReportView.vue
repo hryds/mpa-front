@@ -188,7 +188,7 @@
                 </v-card-title>
             </v-card>
             <v-card color="white">
-                <v-file-input required label="Selecionar Arquivos"></v-file-input>
+                <v-file-input required v-model="selectedFile" label="Selecionar Arquivos"></v-file-input>
             </v-card>
         </v-container>
 
@@ -245,6 +245,7 @@ import APICalls from '@/services/APICalls';
 const producaoId = ref(1);
 const reportId = ref(1);
 const embarcacoesId = ref([]);
+const selectedFile = ref(null);
 
 const successDialog = ref(false);
 const errorDialog = ref(false);
@@ -413,6 +414,22 @@ var formattedDate = new Intl.DateTimeFormat('pt-BR', {
     second: '2-digit',
 }).format(currentDate);
 
+
+const uploadFile = async () => {
+    if (!selectedFile.value) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile.value);
+
+    try {
+        const response = await APICalls.fileUpload(formData);
+    } catch (error) {
+        console.error("Erro ao enviar nota fiscal:", error);
+    }
+};
+
 const saveReport = async () => {
     try {
         const embarcacoesComId = await Promise.all(
@@ -477,6 +494,8 @@ const saveReport = async () => {
                             const response = await APICalls.createProducaoEmbarcacaoEspecie(formReportProducaoData.value);
                             reportId.value = response.data?.producaoEmbarcacaoEspecie?.id;
                             console.log(`Report criado com ID = ${reportId.value}`);
+
+                            uploadFile();
 
                             successDialog.value = true;
                             errorDialog.value = false;

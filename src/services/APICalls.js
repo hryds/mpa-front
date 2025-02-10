@@ -54,8 +54,13 @@ export default {
     },
     verifyID() {
         return API().get('/auth')
+    },
+    fileUpload(fileData) {
+        return API().post('/upload', fileData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     }
-
 }
-
 
