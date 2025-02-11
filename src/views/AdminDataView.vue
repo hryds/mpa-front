@@ -26,16 +26,16 @@
               <p>É necessário fazer login para acessar esta página.</p>
             </v-card-text>
             <v-card-actions>
-              <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
-                :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+              <v-btn class="text-none border" @click="router.push(`/`)" rounded="lg" elevation="2"
+                :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                 Ir para Login
               </v-btn>
             </v-card-actions>
           </v-card>
 
           <template v-else>
-            <v-btn class="text-none border mb-6 mt-2" @click="generateCSV" prepend-icon="mdi-download" rounded="xs"
-              elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
+            <v-btn class="text-none border mb-6 mt-2" @click="generateCSV" prepend-icon="mdi-download" rounded="lg"
+              elevation="2" :style="{ backgroundColor: '#3c8bbc', color: 'black' }">
               Baixar Dados de Produção
             </v-btn>
 

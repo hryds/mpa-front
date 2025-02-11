@@ -27,22 +27,22 @@
                             <p>É necessário fazer login para acessar esta página.</p>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
-                                :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="lg" elevation="2"
+                                :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                                 Ir para Login
                             </v-btn>
                         </v-card-actions>
                     </v-card>
 
                     <template v-if="hasAccess && !loading">
-                        <v-btn class="text-none border mb-8 mt-2" prepend-icon="mdi-download" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="generateCSV">
+                        <v-btn class="text-none border mb-8 mt-2" prepend-icon="mdi-download" rounded="lg" elevation="2"
+                            :style="{ backgroundColor: '#3c8bbc', color: 'black' }" @click="generateCSV">
                             Baixar Dados de Produção
                         </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border mb-4"
-                            prepend-icon="mdi-arrow-right" @click="router.push(`/extracao-dados-admin`)" rounded="xs"
-                            elevation="2" :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            prepend-icon="mdi-arrow-right" @click="router.push(`/extracao-dados-admin`)" rounded="lg"
+                            elevation="2" :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                             Ir para Extração de Dados - Visão de Administrador
                         </v-btn>
 

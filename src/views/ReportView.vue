@@ -25,8 +25,8 @@
                         <p>É necessário fazer login para acessar esta página.</p>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                        <v-btn class="text-none border" @click="router.push(`/`)" rounded="lg" elevation="2"
+                            :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                             Ir para Login
                         </v-btn>
                     </v-card-actions>
@@ -103,14 +103,14 @@
                         <v-col cols="12" md="2">
                             <v-btn icon :disabled="embarcacoes.length === 1" @click="removeEmbarcacao(index)"
                                 class="text-none border" elevation="2"
-                                :style="{ backgroundColor: '#ffbaba', color: 'black' }">
+                                :style="{ backgroundColor: '#FF2F2B', color: 'black' }">
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-btn class="text-none border" rounded="xs" elevation="2"
+                            <v-btn class="text-none border" rounded="lg" elevation="2"
                                 :style="{ backgroundColor: '#f4f4f4', color: 'black' }"
                                 :disabled="embarcacoes.length >= 10" @click="addEmbarcacao">
                                 + Adicionar Embarcação
@@ -171,7 +171,7 @@
         </v-container>
 
         <v-container v-if="userStatus === 'rejeitado'" outlined>
-            <v-card color="#ffbaba">
+            <v-card color="#FF2F2B">
                 <v-card-title class="text-h5">
                     Status Rejeitado
                 </v-card-title>
@@ -198,8 +198,8 @@
         <v-container v-if="hasAccess && userStatus !== 'pendente' && userStatus !== 'rejeitado'" outlined>
             <v-card>
                 <v-card-actions>
-                    <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isReportFormValid ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" prepend-icon="mdi-content-save-outline" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#0CCF13', color: 'black' }, !isReportFormValid ? { opacity: 0.7 } : {}]"
                         @click="saveReport" :disabled="!isReportFormValid">Enviar</v-btn>
                 </v-card-actions></v-card>
         </v-container>
@@ -212,7 +212,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }"
                         @click="closeSuccessDialog">Fechar</v-btn>
                 </v-card-actions>
@@ -229,7 +229,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="closeErrorDialog">Tentar
                         Novamente</v-btn>
                 </v-card-actions>

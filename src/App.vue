@@ -24,7 +24,7 @@
             @click="router.push(`/gerenciar-conta`)">Gerenciamento de Conta</v-list-item>
         </v-list>
         <v-container color="#212c3a">
-          <v-btn v-if="isAuthenticated" class="text-none border-md elevated" prepend-icon="mdi-logout" rounded="xs"
+          <v-btn v-if="isAuthenticated" class="text-none border-md elevated" prepend-icon="mdi-logout" rounded="lg"
             elevation="3" :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="logoutUser">Sair</v-btn>
         </v-container>
       </v-navigation-drawer>

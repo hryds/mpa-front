@@ -29,8 +29,8 @@
                             <p>É necessário fazer login para acessar esta página.</p>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
-                                :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="lg" elevation="2"
+                                :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                                 Ir para Login
                             </v-btn>
                         </v-card-actions>
@@ -38,8 +38,8 @@
 
                     <template v-else>
                         <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border" prepend-icon="mdi-arrow-right"
-                            @click="router.push(`/gerenciar-usuarios`)" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            @click="router.push(`/gerenciar-usuarios`)" rounded="lg" elevation="2"
+                            :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                             Ir para Gerenciamento de Usuários - Visão de Administrador
                         </v-btn>
                     </template>
@@ -87,12 +87,12 @@
                                 label="Complemento de Endereço" outlined dense></v-text-field>
 
                             <v-card-actions class="d-flex justify-end">
-                                <v-btn class="text-none border" rounded="xs" elevation="2"
-                                    :style="{ backgroundColor: '#ff7b7b', color: 'black' }" @click="cancelEdit">
+                                <v-btn class="text-none border" rounded="lg" elevation="2"
+                                    :style="{ backgroundColor: '#FF2F2B', color: 'black' }" @click="cancelEdit">
                                     Cancelar
                                 </v-btn>
-                                <v-btn class="text-none border" rounded="xs" elevation="4"
-                                    :style="{ backgroundColor: '#ddf0c7', color: 'black' }" :disabled="!isFormValid"
+                                <v-btn class="text-none border" rounded="lg" elevation="4"
+                                    :style="{ backgroundColor: '#0CCF13', color: 'black' }" :disabled="!isFormValid"
                                     @click="openConfirmDialog">
                                     Salvar
                                 </v-btn>
@@ -114,13 +114,13 @@
                     <p><span class="font-weight-bold">Complemento: </span>{{ editedUser.complemento }}</p>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ff7b7b', color: 'black' }" @click="confirmDialog = false">
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
+                        :style="{ backgroundColor: '#FF2F2B', color: 'black' }" @click="confirmDialog = false">
                         Cancelar
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" rounded="xs" elevation="4"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" @click="confirmSave">
+                    <v-btn class="text-none border" rounded="lg" elevation="4"
+                        :style="{ backgroundColor: '#0CCF13', color: 'black' }" @click="confirmSave">
                         Confirmar
                     </v-btn>
                 </v-card-actions>
@@ -136,7 +136,7 @@
                     Erro: {{ loginErrorMessage }}
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="showErrorModal = false">Tentar
                         Novamente</v-btn>
                 </v-card-actions>

@@ -16,14 +16,14 @@
                     </v-form>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#0CCF13', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
                         :disabled="!isFormValid" @click="loginUser">Entrar</v-btn>
-                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                         <template #prepend>
                             <img src="@/assets/microsoft.svg" alt="Logo" style="width: 24px; height: 24px;" />
@@ -43,7 +43,7 @@
                     <div style="color: red;">{{ loginErrorMessage }}</div>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="showErrorModal = false">Tentar
                         Novamente</v-btn>
                 </v-card-actions>

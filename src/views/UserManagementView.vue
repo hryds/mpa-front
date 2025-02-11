@@ -25,8 +25,8 @@
                             <p>É necessário fazer login para acessar esta página.</p>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="xs" elevation="2"
-                                :style="{ backgroundColor: '#ddf0c7', color: 'black' }">
+                            <v-btn class="text-none border" @click="router.push(`/`)" rounded="lg" elevation="2"
+                                :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                                 Ir para Login
                             </v-btn>
                         </v-card-actions>
@@ -50,23 +50,23 @@
                     </template>
                 </v-card-text>
                 <v-card-actions v-if="hasAccess">
-                    <v-btn class="text-none border" prepend-icon="mdi-check-bold" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ddf0c7', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" prepend-icon="mdi-check-bold" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#0CCF13', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="aproveUsers">Aprovar
                         Selecionados</v-btn>
-                    <v-btn class="text-none border" prepend-icon="mdi-close-thick" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ffbaba', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" prepend-icon="mdi-close-thick" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#FF2F2B', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="rejectUsers">Rejeitar
                         Selecionados</v-btn>
-                    <!--<v-btn class="text-none border" prepend-icon="mdi-trash-can" rounded="xs" elevation="2"
+                    <!--<v-btn class="text-none border" prepend-icon="mdi-trash-can" rounded="lg" elevation="2"
                         :style="[{ backgroundColor: '#ff7b7b', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="openModal">Deletar
                         Selecionados</v-btn>-->
-                    <v-btn class="text-none border" prepend-icon="mdi-security" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#5775FA', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" prepend-icon="mdi-security" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#1e3ef9', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="makeUserAdmin">Tornar Administrador</v-btn>
-                    <v-btn class="text-none border" prepend-icon="mdi-shield-remove" rounded="xs" elevation="2"
-                        :style="[{ backgroundColor: '#ffbaba', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
+                    <v-btn class="text-none border" prepend-icon="mdi-shield-remove" rounded="lg" elevation="2"
+                        :style="[{ backgroundColor: '#FF2F2B', color: 'black' }, isDisabled ? { opacity: 0.7 } : {}]"
                         :disabled="isDisabled" @click="removeUserAdmin">Remover Administrador</v-btn>
                 </v-card-actions>
             </v-card>
@@ -95,12 +95,12 @@
                     após a confirmação.
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ffbaba', color: 'black' }" text
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
+                        :style="{ backgroundColor: '#FF2F2B', color: 'black' }" text
                         @click="closeModal">Cancelar</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" rounded="xs" elevation="2"
-                        :style="{ backgroundColor: '#ddf0c7', color: 'black' }" text
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
+                        :style="{ backgroundColor: '#0CCF13', color: 'black' }" text
                         @click="deleteUsers">Prosseguir</v-btn>
                 </v-card-actions>
             </v-card>
