@@ -33,10 +33,19 @@
                     </v-card>
 
                     <template v-else>
+
+                        <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify"
+                            variant="outlined" density="compact" hide-details single-line></v-text-field>
                         <h5 v-if="selected.length > 0">Selecionados: {{ selected }}</h5>
+
                         <v-data-table v-model="selected" :headers="headers" :items="usersData" item-key="id" show-select
-                            class="elevation-2 mt-4 mb-4" :items-per-page="50"
-                            :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }">
+                            class="elevation-2 mt-4 mb-4" :items-per-page="50" :search="search"
+                            :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }"> <template
+                                v-slot:item.status="{ item }">
+                                <v-chip :color="getColor(item.status)">
+                                    {{ item.status }}
+                                </v-chip>
+                            </template>
                         </v-data-table>
                     </template>
                 </v-card-text>
@@ -113,12 +122,12 @@ const hasAccess = ref(false);
 const headers = ref([
     { title: "ID", value: "id", sortable: true },
     { title: "Nome", value: "nome", sortable: true },
-    { title: "Email", value: "email" },
+    { title: "Email", value: "email", sortable: true },
     { title: "Status", value: "status", sortable: true },
-    { title: "Tipo", value: "tipo" },
+    { title: "Tipo", value: "tipo", sortable: true },
     { title: "CNPJ", value: "cnpj", sortable: true },
     { title: "RGP", value: "rgp", sortable: true },
-    { title: "CEP", value: "cep" },
+    { title: "CEP", value: "cep", sortable: true },
 ]);
 
 const loading = ref(true);
@@ -126,6 +135,17 @@ const isAdmin = ref(false);
 const currentUserID = ref(0);
 
 const isDisabled = computed(() => selected.value.length === 0);
+
+const search = ref('');
+
+const getColor = (status) => {
+    switch (status) {
+        case 'pendente': return 'orange';
+        case 'aprovado': return 'green';
+        case 'rejeitado': return 'red';
+        default: return 'gray';
+    }
+};
 
 const loadUsers = async () => {
     try {
