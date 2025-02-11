@@ -36,7 +36,7 @@
 
                     <template v-if="hasAccess && !loading">
                         <v-btn class="text-none border mb-8 mt-2" prepend-icon="mdi-download" rounded="xs" elevation="2"
-                            :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
+                            :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="generateCSV">
                             Baixar Dados de Produção
                         </v-btn>
                         <v-spacer></v-spacer>
@@ -154,6 +154,30 @@ const logoutUser = async () => {
 };
 
 
+const generateCSV = () => {
+    const header = '"id_producao", "data_inicial_lote", "data_final_lote", "data_reporte", "especie", "rgp", "peso"\n';
+
+    const rows = producoesData.value.flatMap((producao) => {
+        return producao.producaoEmbarcacaoEspecies.map((item) => {
+            return [
+                producao.id,
+                new Date(producao.dataInicial + 'T00:00:00').toLocaleDateString('pt-BR'),
+                new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR'),
+                new Date(producao.createdAt).toLocaleDateString('pt-BR'),
+                item.especie?.nomeComum,
+                item.embarcacao?.rgp,
+                `${item.peso}`,
+            ].map((field) => `"${field}"`).join(',');
+        });
+    }).join('\n');
+
+    const csvContent = header + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'dados_producao.csv';
+    link.click();
+};
 
 onMounted(async () => {
     await getUserID();

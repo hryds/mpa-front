@@ -34,8 +34,8 @@
           </v-card>
 
           <template v-else>
-            <v-btn class="text-none border mb-6 mt-2" prepend-icon="mdi-download" rounded="xs" elevation="2"
-              :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
+            <v-btn class="text-none border mb-6 mt-2" @click="generateCSV" prepend-icon="mdi-download" rounded="xs"
+              elevation="2" :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
               Baixar Dados de Produção
             </v-btn>
 
@@ -208,6 +208,37 @@ onMounted(async () => {
 
   loading.value = false;
 });
+
+
+const generateCSV = () => {
+  const header = '"user", "cnpj", "id_producao", "data_inicial_lote", "data_final_lote", "data_reporte", "especie", "rgp", "peso"\n';
+
+  const rows = producoesData.value.flatMap((producaoPorUsuario) => {
+    const userData = getUserData(producaoPorUsuario.userId);
+    return producaoPorUsuario.producoes.flatMap((producao) => {
+      return producao.producaoEmbarcacaoEspecies.map((item) => {
+        return [
+          producaoPorUsuario.userId,
+          userData.cnpj,
+          producao.id,
+          new Date(producao.dataInicial + 'T00:00:00').toLocaleDateString('pt-BR'),
+          new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR'),
+          new Date(producao.createdAt).toLocaleDateString('pt-BR'),
+          item.especie?.nomeComum,
+          item.embarcacao?.rgp,
+          `${item.peso}`,
+        ].map((field) => `"${field}"`).join(',');
+      });
+    });
+  }).join('\n');
+
+  const csvContent = header + rows;
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'dados_producao_admin.csv';
+  link.click();
+};
 </script>
 
 <style scoped>
