@@ -15,13 +15,16 @@
         <v-list>
           <v-list-subheader></v-list-subheader>
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-fish"
-            @click="router.push(`/reportar-producao`)">Reportar
+            @click="router.push(`/reportar-producao`)"
+            :class="{ 'active-item': isActive('/reportar-producao') }">Reportar
             Produção </v-list-item>
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-download"
-            @click="router.push(`/extracao-dados`)">Extração de
+            @click="router.push(`/extracao-dados`)" :class="{ 'active-item': isActive('/extracao-dados') }">Extração de
             Dados</v-list-item>
           <v-list-item class="elevation-2 border-double border-md" prepend-icon="mdi-account-edit"
-            @click="router.push(`/gerenciar-conta`)">Gerenciamento de Conta</v-list-item>
+            @click="router.push(`/gerenciar-conta`)"
+            :class="{ 'active-item': isActive('/gerenciar-conta') }">Gerenciamento de
+            Conta</v-list-item>
         </v-list>
         <v-container color="#212c3a">
           <v-btn v-if="isAuthenticated" class="text-none border-md elevated" prepend-icon="mdi-logout" rounded="lg"
@@ -75,6 +78,10 @@ const logoutUser = async () => {
   }
 };
 
+const isActive = (path) => {
+  return route.path === path;
+};
+
 </script>
 
 <style>
@@ -88,5 +95,10 @@ const logoutUser = async () => {
   border-color: black;
   margin-bottom: 10px;
 
+}
+
+.active-item {
+  background-color: #475F7D;
+  color: white !important;
 }
 </style>

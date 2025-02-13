@@ -23,13 +23,13 @@
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
+                    <!----<v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                         <template #prepend>
                             <img src="@/assets/microsoft.svg" alt="Logo" style="width: 24px; height: 24px;" />
                         </template>
-                        Continue com Microsoft
-                    </v-btn>
+Continue com Microsoft
+</v-btn>-->
                 </v-card-actions>
             </v-card>
         </v-container>

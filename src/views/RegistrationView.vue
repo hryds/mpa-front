@@ -35,13 +35,13 @@
             :style="[{ backgroundColor: '#0CCF13', color: 'black' }, !isFormValid ? { opacity: 0.7 } : {}]"
             @click="saveUser" :disabled="!isFormValid">Salvar</v-btn>
           <v-spacer></v-spacer>
-          <v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
+          <!----<v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
             :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
             <template #prepend>
               <img src="@/assets/microsoft.svg" alt="Logo" style="width: 24px; height: 24px;" />
             </template>
             Continue com Microsoft
-          </v-btn>
+          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-container>

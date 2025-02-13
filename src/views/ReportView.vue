@@ -208,7 +208,7 @@
             <v-card>
                 <v-card-title class="text-h5">Sucesso</v-card-title>
                 <v-card-text>
-                    Relatório de Produção enviado.
+                    Relatório de Produção {{ modalMessage }} enviado.
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -255,7 +255,7 @@ const errorDialog = ref(false);
 const hasAccess = ref(false);
 const userStatus = ref('');
 const loading = ref(true);
-
+const modalMessage = ref('');
 
 const closeSuccessDialog = () => {
     successDialog.value = false;
@@ -480,6 +480,7 @@ const saveReport = async () => {
         const response = await APICalls.createProducao(payload);
         producaoId.value = response.data?.producao?.id;
         console.log(`Produção criada com ID = ${producaoId.value}`);
+        modalMessage.value = `${producaoId.value}`;
 
         await uploadFile(producaoId.value);
 
