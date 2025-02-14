@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 
-export default (url = 'http://localhost:3000') => {
+export default (url = 'https://rascunhoapi.onrender.com') => {
     const api = axios.create({
         baseURL: url,
         withCredentials: true,
