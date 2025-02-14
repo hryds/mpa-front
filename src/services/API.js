@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 
-export default (url = 'https://rascunhoapi.onrender.com') => {
+export default (url = import.meta.env.VITE_API_URL) => {
     const api = axios.create({
         baseURL: url,
         withCredentials: true,

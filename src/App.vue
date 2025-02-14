@@ -60,7 +60,6 @@ const isDrawerOpen = ref(true)
 const route = useRoute()
 const router = useRouter()
 
-
 const isAuthenticated = ref(localStorage.getItem('isAuthenticated') === 'false');
 
 watchEffect(() => {
