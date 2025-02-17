@@ -16,6 +16,12 @@ export default {
     updateUserType(id, typeData) {
         return API().patch(`/users/updatetype/${id}`, typeData);
     },
+    updateUserPassword(id, passwordData) {
+        return API().patch(`/users/updatepassword/${id}`, passwordData);
+    },
+    resetUserPassword(emailData) {
+        return API().post(`/users/reset-password`, emailData);
+    },
     createUser(formUserRegisterData) {
         return API().post('/users', formUserRegisterData);
     },

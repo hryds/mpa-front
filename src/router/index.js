@@ -6,6 +6,7 @@ import DataView from '@/views/DataView.vue'
 import UserManagementView from '@/views/UserManagementView.vue'
 import AdminDataView from '@/views/AdminDataView.vue'
 import AccountView from '@/views/AccountView.vue'
+import PasswordRecoveryView from '@/views/PasswordRecoveryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,10 @@ const router = createRouter({
       path: '/gerenciar-usuarios',
       name: 'gerenciar-usuarios',
       component: UserManagementView,
+    }, {
+      path: '/recuperar-senha',
+      name: 'recuperar-senha',
+      component: PasswordRecoveryView,
     },
   ],
 })

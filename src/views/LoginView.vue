@@ -23,6 +23,8 @@
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Cadastrar
                         Novo Usuário</v-btn>
                     <v-spacer></v-spacer>
+                    <v-btn class="text-none border" @click="router.push(`/recuperar-senha`)" rounded="lg" elevation="2"
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }">Esqueceu sua senha?</v-btn>
                     <!----<v-btn class="text-none border" @click="router.push(`/cadastro`)" rounded="lg" elevation="2"
                         :style="{ backgroundColor: '#f4f4f4', color: 'black' }">
                         <template #prepend>

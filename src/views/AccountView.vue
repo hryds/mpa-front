@@ -143,6 +143,67 @@
             </v-card>
         </v-dialog>
 
+        <v-container v-if="hasAccess && !loading">
+            <v-card color="#3b8dbb">
+                <v-card-title class="text-h5 d-flex align-center justify-space-between">Alterar Senha
+                    <v-tooltip text="Alterar Senha">
+                        <template v-slot:activator="{ props }">
+                            <v-icon v-bind="props" size="28" @click="togglePasswordEdit">mdi-pencil</v-icon>
+                        </template>
+                    </v-tooltip>
+                </v-card-title>
+            </v-card>
+            <v-card color="white">
+                <v-card-text>
+                    <template v-if="!isEditingPassword">
+                        <p><span class="font-weight-bold">Senha: </span> ********</p>
+                    </template>
+                    <template v-else>
+                        <v-form ref="passwordForm">
+                            <v-text-field v-model="newPassword" :rules="[validateNotNull]" label="Nova Senha"
+                                variant="outlined" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                :type="visible ? 'text' : 'password'"
+                                @click:append-inner="visible = !visible"></v-text-field>
+                            <v-text-field v-model="confirmPassword"
+                                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :rules="[validateNotNull]"
+                                label="Confirmar Nova Senha" variant="outlined" :type="visible ? 'text' : 'password'"
+                                @click:append-inner="visible = !visible"></v-text-field>
+
+                            <v-card-actions class="d-flex justify-end">
+                                <v-btn class="text-none border" rounded="lg" elevation="2"
+                                    :style="{ backgroundColor: '#FF2F2B', color: 'black' }" @click="cancelPasswordEdit">
+                                    Cancelar
+                                </v-btn>
+                                <v-btn class="text-none border" rounded="lg" elevation="4"
+                                    :style="{ backgroundColor: '#0CCF13', color: 'black' }" :disabled="!isPasswordValid"
+                                    @click="confirmPasswordSave">
+                                    Salvar
+                                </v-btn>
+                            </v-card-actions>
+                        </v-form>
+                    </template>
+                </v-card-text>
+            </v-card>
+        </v-container>
+
+        <v-dialog v-model="showPasswordModal" max-width="600px">
+            <v-card>
+                <v-card-title class="text-h5">
+                    {{ passwordModalSuccess ? "Sucesso" : "Erro" }}
+                </v-card-title>
+                <v-card-text>
+                    {{ passwordModalMessage }}
+                </v-card-text>
+                <v-card-actions class="d-flex justify-end">
+                    <v-btn class="text-none border" rounded="lg" elevation="2"
+                        :style="{ backgroundColor: '#f4f4f4', color: 'black' }" @click="showPasswordModal = false">
+                        Fechar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
     </v-app>
 </template>
 
@@ -155,6 +216,7 @@ import APICalls from "@/services/APICalls";
 const router = useRouter();
 const hasAccess = ref(false);
 const isEditing = ref(false);
+const isEditingPassword = ref(false);
 const confirmDialog = ref(false);
 const showErrorModal = ref(false);
 const loginErrorMessage = ref('');
@@ -162,6 +224,13 @@ const userInfo = ref({});
 const editedUser = ref({});
 const currentUserID = ref(0);
 const loading = ref(true);
+const newPassword = ref("");
+const confirmPassword = ref("");
+const visible = ref(false);
+
+const showPasswordModal = ref(false);
+const passwordModalMessage = ref("");
+const passwordModalSuccess = ref(false);
 
 const loadUserInfo = async () => {
     try {
@@ -214,10 +283,20 @@ const toggleEdit = () => {
     isEditing.value = true;
 };
 
+const togglePasswordEdit = () => {
+    isEditingPassword.value = true;
+};
+
 const cancelEdit = () => {
     editedUser.value = { ...userInfo.value };
     isEditing.value = false;
 };
+
+const cancelPasswordEdit = () => {
+    newPassword.value = "";
+    confirmPassword.value = "";
+    isEditingPassword.value = false;
+};;
 
 const openConfirmDialog = () => {
     confirmDialog.value = true;
@@ -276,4 +355,32 @@ const logoutUser = async () => {
         console.error('Erro durante o logout:', error.response?.data || error.message);
     }
 };
+
+const isPasswordValid = computed(() => {
+    return newPassword.value.trim() !== "" &&
+        confirmPassword.value.trim() !== "" &&
+        newPassword.value.length >= 6 &&
+        confirmPassword.value.length >= 6 &&
+        newPassword.value === confirmPassword.value;
+});
+
+
+const confirmPasswordSave = async () => {
+    confirmDialog.value = false;
+    try {
+        const response = await APICalls.updateUserPassword(currentUserID.value, { password: newPassword.value });
+
+
+        if (response.status === 200) {
+            passwordModalMessage.value = "Senha alterada com sucesso!";
+            passwordModalSuccess.value = true;
+            cancelPasswordEdit();
+        }
+    } catch (error) {
+        passwordModalMessage.value = error.response?.data?.message || "Erro ao alterar a senha.";
+        passwordModalSuccess.value = false;
+    }
+    showPasswordModal.value = true;
+};
+
 </script>
