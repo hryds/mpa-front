@@ -146,7 +146,7 @@
                                     <v-col v-for="(embarcacao, idx) in embarcacoes" :key="idx" cols="2">
                                         <v-text>
                                             <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')'
-                                                }}</span>
+                                            }}</span>
                                         </v-text>
                                         <v-text-field variant="outlined" type="number" :min="0"
                                             v-model="dados[especie.id][idx]" :rules="[validatePeso]"></v-text-field>
@@ -399,7 +399,7 @@ const logoutUser = async () => {
         const response = await APICalls.logOut();
         localStorage.setItem('isAuthenticated', 'false');
         localStorage.clear();
-        router.push(`/`)
+        window.location.href = '/';
     } catch (error) {
         console.error('Erro durante o logout:', error.response?.data || error.message);
     }

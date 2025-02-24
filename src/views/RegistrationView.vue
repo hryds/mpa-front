@@ -14,7 +14,7 @@
           <v-form>
             <v-text-field class="pb-2" v-model="formUserRegisterData.nome" label="Nome da Empresa" required
               :rules="[validateNotNull]" variant="outlined"></v-text-field>
-            <v-text-field class="pb-2" v-model="formUserRegisterData.email" label="E-mail" required
+            <v-text-field class="pb-2" v-model="formUserRegisterData.email" label="Email" required
               :rules="[validateNotNull, validateEmail]" variant="outlined" type="email"></v-text-field>
             <v-text-field label="CNPJ" v-model="formUserRegisterData.cnpj" required
               :rules="[validateNotNull, validateCNPJ]" variant="outlined"></v-text-field>
@@ -145,7 +145,7 @@ const saveUser = async () => {
   } catch (error) {
     modalTitle.value = 'Erro';
     console.log(error);
-    modalMessage.value = `Erro ao Cadastrar Usuário: ${error.response?.data?.message || error.message}`;
+    modalMessage.value = `Erro ao cadastrar usuário: ${error.response?.data?.message || error.message}`;
     modalButtonText.value = 'Tentar Novamente';
     showModal.value = true;
   }

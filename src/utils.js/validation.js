@@ -24,7 +24,7 @@ export const validateEmail = (value) => {
         return "Obrigatório.";
     }
     if (!emailRegex.test(value)) {
-        return "E-mail inválido.";
+        return "Email inválido.";
     }
     return true;
 };

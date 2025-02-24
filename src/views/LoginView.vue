@@ -7,7 +7,7 @@
                 </v-card-title>
                 <v-card-text>
                     <v-form>
-                        <v-text-field :rules="[validateNotNull, validateEmail]" label="E-mail"
+                        <v-text-field :rules="[validateNotNull, validateEmail]" label="Email"
                             v-model="formUserLogin.email" required variant="outlined" type="email"></v-text-field>
                         <v-text-field :rules="[validateNotNull]"
                             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" v-model="formUserLogin.password"
@@ -85,7 +85,7 @@ const loginUser = async () => {
 
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('isAuthenticated', true);
-        router.push(`/reportar-producao`);
+        window.location.href = '/reportar-producao';
     } catch (error) {
         console.error('Erro durante o login:', error.response?.data || error.message);
         loginErrorMessage.value = error.response?.data?.message || "Ocorreu um erro ao tentar fazer login.";

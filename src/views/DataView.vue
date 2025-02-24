@@ -147,7 +147,7 @@ const logoutUser = async () => {
         const response = await APICalls.logOut();
         localStorage.setItem('isAuthenticated', 'false');
         localStorage.clear();
-        router.push(`/`)
+        window.location.href = '/';
     } catch (error) {
         console.error('Erro durante o logout:', error.response?.data || error.message);
     }

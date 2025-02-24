@@ -71,7 +71,7 @@ const logoutUser = async () => {
     localStorage.setItem('isAuthenticated', 'false');
     isAuthenticated.value = false;
     localStorage.clear();
-    router.push(`/`)
+    window.location.href = '/';
   } catch (error) {
     console.error('Erro durante o logout:', error.response?.data || error.message);
   }

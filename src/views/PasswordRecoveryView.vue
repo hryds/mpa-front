@@ -21,7 +21,7 @@
                             Gerenciamento de Conta.
                         </router-link></p>
                     <v-form>
-                        <v-text-field label="E-mail" v-model="email" :rules="[validateNotNull, validateEmail]" required
+                        <v-text-field label="Email" v-model="email" :rules="[validateNotNull, validateEmail]" required
                             variant="outlined" type="email"></v-text-field>
                     </v-form>
                 </v-card-text>
@@ -56,7 +56,7 @@ import { validateNotNull, validateEmail } from '@/utils.js/validation';
 import APICalls from '@/services/APICalls';
 
 const dialog = ref(false);
-const title = ref(""); 
+const title = ref("");
 const message = ref("");
 const isSuccess = ref(false);
 
@@ -82,7 +82,7 @@ const resetPassword = async () => {
 const handleClose = () => {
     dialog.value = false;
     if (isSuccess.value) {
-        router.push('/'); 
+        router.push('/');
     }
 };
 

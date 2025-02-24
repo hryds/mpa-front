@@ -46,7 +46,7 @@
                   getUserData(producaoPorUsuario.userId)?.nome }}</h2>
 
                 <h3 class="mb-6" style="text-align: center;">(id: {{ producaoPorUsuario.userId
-                  }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </h3>
+                }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </h3>
                 <div v-if="producaoPorUsuario.producoes.length">
                   <div v-for="(producao, index) in producaoPorUsuario.producoes" :key="producao.id">
                     <div v-if="producao.producaoEmbarcacaoEspecies.length" class="borda-producao">
@@ -54,7 +54,7 @@
                       <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
                         'T00:00:00').toLocaleDateString('pt-BR') }}</p>
                       <p>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR')
-                        }}
+                      }}
                       </p>
                       <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
                       </p>
@@ -189,7 +189,7 @@ const logoutUser = async () => {
     const response = await APICalls.logOut();
     localStorage.setItem('isAuthenticated', 'false');
     localStorage.clear();
-    router.push(`/`)
+    window.location.href = '/';
   } catch (error) {
     console.error('Erro durante o logout:', error.response?.data || error.message);
   }
