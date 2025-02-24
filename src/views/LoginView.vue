@@ -85,7 +85,7 @@ const loginUser = async () => {
 
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('isAuthenticated', true);
-        window.location.href = '/reportar-producao';
+        router.push(`/reportar-producao`);
     } catch (error) {
         console.error('Erro durante o login:', error.response?.data || error.message);
         loginErrorMessage.value = error.response?.data?.message || "Ocorreu um erro ao tentar fazer login.";
