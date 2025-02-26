@@ -35,12 +35,12 @@
                     </v-card>
 
                     <template v-if="hasAccess && !loading">
-                        <v-btn class="text-none border mb-8 mt-2" prepend-icon="mdi-download" rounded="lg" elevation="2"
+                        <v-btn class="text-none border mb-6 mt-2" prepend-icon="mdi-download" rounded="lg" elevation="2"
                             :style="{ backgroundColor: '#3c8bbc', color: 'black' }" @click="generateCSV">
                             Baixar Dados de Produção
                         </v-btn>
                         <v-spacer></v-spacer>
-                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border mb-4"
+                        <v-btn v-if="userInfo.tipo === 'admin'" class="text-none border mb-6"
                             prepend-icon="mdi-arrow-right" @click="router.push(`/extracao-dados-admin`)" rounded="lg"
                             elevation="2" :style="{ backgroundColor: '#0CCF13', color: 'black' }">
                             Ir para Extração de Dados - Visão de Administrador
@@ -49,18 +49,21 @@
                         <div v-if="producoesData.length">
                             <div v-for="(producao, index) in producoesData" :key="producao.id" elevation="4">
                                 <div v-if="producao.producaoEmbarcacaoEspecies.length" class="borda-producao">
-                                    <h3 class="mb-6" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
-                                    <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
-                                        'T00:00:00').toLocaleDateString('pt-BR') }}
-                                    </p>
-                                    <p>Data Final do Lote: {{ new Date(producao.dataFinal +
-                                        'T00:00:00').toLocaleDateString('pt-BR') }}</p>
-                                    <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
-                                    </p>
+                                    <v-card-title class="text-h6">Mapa de Produção {{ producao.id }}</v-card-title>
+                                    <v-card-text>
+                                        <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
+                                            'T00:00:00').toLocaleDateString('pt-BR') }}
+                                        </p>
+                                        <p>Data Final do Lote: {{ new Date(producao.dataFinal +
+                                            'T00:00:00').toLocaleDateString('pt-BR') }}</p>
+                                        <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR')
+                                        }}
+                                        </p>
+                                    </v-card-text>
                                     <div class="mb-10"></div>
                                     <v-data-table class="d-flex align-center mb-4"
                                         :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }"
-                                        :headers="headers" :hide-default-footer="true" :items-per-page="-1"
+                                        :headers="headers" dense hover :hide-default-footer="true" :items-per-page="-1"
                                         elevation="2" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
                                             especie: item.especie?.nomeComum,
                                             embarcacao: item.embarcacao?.rgp,
@@ -189,9 +192,16 @@ onMounted(async () => {
 
 <style scoped>
 .borda-producao {
-    border: 2px solid #95C8D8;
-    padding: 10px;
+    border: 2px solid rgba(149, 200, 216, 0.5);
+    padding: 16px;
     margin-bottom: 20px;
-    border-radius: 4px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.borda-producao:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 </style>

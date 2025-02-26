@@ -40,27 +40,28 @@
             </v-btn>
 
             <div v-if="producoesData.length">
-              <div v-for="(producaoPorUsuario, index) in producoesData" :key="producaoPorUsuario.userId"
-                class="borda-producao">
-                <h2 class="mb-3" style="text-align: center;">Mapas de Produção de {{
-                  getUserData(producaoPorUsuario.userId)?.nome }}</h2>
+              <div v-for="(producaoPorUsuario, index) in producoesData" :key="producaoPorUsuario.userId">
+                <v-card-title class="mb-3 text-h5" style="text-align: center;">Mapas de Produção de {{
+                  getUserData(producaoPorUsuario.userId)?.nome }}</v-card-title>
 
-                <h3 class="mb-6" style="text-align: center;">(id: {{ producaoPorUsuario.userId
-                }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </h3>
+                <v-card-subtitle class="mb-6 text-h7" style="text-align: center;">(id: {{ producaoPorUsuario.userId
+                }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </v-card-subtitle>
                 <div v-if="producaoPorUsuario.producoes.length">
                   <div v-for="(producao, index) in producaoPorUsuario.producoes" :key="producao.id">
                     <div v-if="producao.producaoEmbarcacaoEspecies.length" class="borda-producao">
-                      <h3 class="mb-6" style="text-align: center;">Mapa de Produção {{ producao.id }}</h3>
-                      <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
-                        'T00:00:00').toLocaleDateString('pt-BR') }}</p>
-                      <p>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR')
-                      }}
-                      </p>
-                      <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
-                      </p>
+                      <v-card-title class="mb-6 text-h6">Mapa de Produção {{ producao.id }}</v-card-title>
+                      <v-card-text>
+                        <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
+                          'T00:00:00').toLocaleDateString('pt-BR') }}</p>
+                        <p>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR')
+                        }}
+                        </p>
+                        <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
+                        </p>
+                      </v-card-text>
                       <v-data-table class="d-flex align-center mt-10 mb-4"
                         :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }" :headers="headers"
-                        :hide-default-footer="true" :items-per-page="-1" elevation="2" :items="producao.producaoEmbarcacaoEspecies.map((item) => ({
+                        :hide-default-footer="true" dense hover :items-per-page="-1" elevation="2" :items="producao.producaoEmbarcacaoEspecies.map((item) => ({
                           especie: item.especie?.nomeComum,
                           embarcacao: item.embarcacao?.rgp,
                           peso: `${item.peso} kg`,
@@ -69,7 +70,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-else>
+                <div v-else class="mb-8">
                   <p>Usuário ID {{ producaoPorUsuario.userId }} não possui produções.</p>
                 </div>
               </div>
@@ -243,9 +244,16 @@ const generateCSV = () => {
 
 <style scoped>
 .borda-producao {
-  border: 2px solid #95C8D8;
-  padding: 10px;
-  margin-bottom: 40px;
-  border-radius: 4px;
+  border: 2px solid rgba(149, 200, 216, 0.5);
+  padding: 16px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.borda-producao:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 </style>
