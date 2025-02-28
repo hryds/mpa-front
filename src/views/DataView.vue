@@ -66,7 +66,7 @@
                                         :headers="headers" dense hover :hide-default-footer="true" :items-per-page="-1"
                                         elevation="2" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
                                             especie: item.especie?.nomeComum,
-                                            embarcacao: item.embarcacao?.rgp,
+                                            embarcacao: item.embarcacao?.rgp.toString()?.toUpperCase(),
                                             peso: `${item.peso} kg`
                                         }))" item-value="id"></v-data-table>
                                 </div>
@@ -158,7 +158,7 @@ const logoutUser = async () => {
 
 
 const generateCSV = () => {
-    const header = '"id_producao", "data_inicial_lote", "data_final_lote", "data_reporte", "especie", "rgp", "peso"\n';
+    const header = '"id_producao", "data_inicial_lote", "data_final_lote", "data_reporte", "nome_comum","especie", "rgp", "peso"\n';
 
     const rows = producoesData.value.flatMap((producao) => {
         return producao.producaoEmbarcacaoEspecies.map((item) => {
@@ -168,7 +168,8 @@ const generateCSV = () => {
                 new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR'),
                 new Date(producao.createdAt).toLocaleDateString('pt-BR'),
                 item.especie?.nomeComum,
-                item.embarcacao?.rgp,
+                item.especie?.nomeCientifico,
+                item.embarcacao?.rgp.toString()?.toUpperCase(),
                 `${item.peso}`,
             ].map((field) => `"${field}"`).join(',');
         });

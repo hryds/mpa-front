@@ -68,6 +68,16 @@ export const validatePeso = (value) => {
     if (!pesoRegex.test(value)) {
         return "Formato Inválido";
     }
+    const pesoNumerico = parseFloat(value.toString().replace(',', '.')); 
+
+    if (pesoNumerico < 0.1) {
+        return "Peso inválido. Valor mínimo: 0.1 kg.";
+    }
+
+    if (pesoNumerico > 300000) {
+        return "Peso inválido. Valor máximo: 300000 kg.";
+    }
+
     return true;
 
 };

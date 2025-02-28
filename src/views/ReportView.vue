@@ -148,7 +148,7 @@
                                             <span class="font-weight-bold">{{ 'Embarcação (' + (idx + 1) + ')'
                                             }}</span>
                                         </v-text>
-                                        <v-text-field variant="outlined" type="number" :min="0"
+                                        <v-text-field variant="outlined" type="number" :min="0.1" :max="300001"
                                             v-model="dados[especie.id][idx]" :rules="[validatePeso]"></v-text-field>
                                     </v-col>
                                 </v-row>
