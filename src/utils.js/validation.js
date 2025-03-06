@@ -51,6 +51,17 @@ export const validateRGP = (value) => {
     return true;
 };
 
+export const validateUserRGP = (value) => {
+    const rgpRegex = /^([A-Za-z]{3})-?(\d{7})-?(\d)$/;
+    if (!value) {
+        return "Obrigatório.";
+    }
+    if (!rgpRegex.test(value)) {
+        return "RGP inválido.";
+    }
+    return true;
+};
+
 export const validateCEP = (value) => {
     const cepRegex = /^\d{5}-?\d{3}$$/;
     if (!value) {
@@ -68,7 +79,7 @@ export const validatePeso = (value) => {
     if (!pesoRegex.test(value)) {
         return "Formato Inválido";
     }
-    const pesoNumerico = parseFloat(value.toString().replace(',', '.')); 
+    const pesoNumerico = parseFloat(value.toString().replace(',', '.'));
 
     if (pesoNumerico < 0.1) {
         return "Peso inválido. Valor mínimo: 0.1 kg.";

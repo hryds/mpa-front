@@ -79,8 +79,8 @@
                                 label="Email" outlined dense></v-text-field>
                             <v-text-field :rules="[validateNotNull, validateCNPJ]" v-model="editedUser.cnpj"
                                 label="CNPJ" outlined dense></v-text-field>
-                            <v-text-field :rules="[validateNotNull, validateRGP]" v-model="editedUser.rgp" label="RGP"
-                                outlined dense></v-text-field>
+                            <v-text-field :rules="[validateNotNull, validateUserRGP]" v-model="editedUser.rgp"
+                                label="RGP" outlined dense></v-text-field>
                             <v-text-field :rules="[validateNotNull, validateCEP]" v-model="editedUser.cep" label="CEP"
                                 outlined dense></v-text-field>
                             <v-text-field :rules="[validateNotNull]" v-model="editedUser.complemento"
@@ -210,7 +210,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { validateNotNull, validateCNPJ, validateEmail, validateRGP, validateCEP } from "@/utils.js/validation";
+import { validateNotNull, validateCNPJ, validateEmail, validateRGP, validateUserRGP, validateCEP } from "@/utils.js/validation";
 import APICalls from "@/services/APICalls";
 
 const router = useRouter();
@@ -274,7 +274,7 @@ const isFormValid = computed(() => {
         editedUser.value.cep.trim() !== '' &&
         validateEmail(editedUser.value.email) === true &&
         validateCNPJ(editedUser.value.cnpj) === true &&
-        validateRGP(editedUser.value.rgp) === true &&
+        validateUserRGP(editedUser.value.rgp) === true &&
         validateCEP(editedUser.value.cep) === true &&
         editedUser.value.complemento.trim() !== '';
 });

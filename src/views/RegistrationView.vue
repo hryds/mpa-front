@@ -19,7 +19,7 @@
             <v-text-field label="CNPJ" v-model="formUserRegisterData.cnpj" required
               :rules="[validateNotNull, validateCNPJ]" variant="outlined"></v-text-field>
             <v-text-field class="pb-2" v-model="formUserRegisterData.rgp" label="RGP" required
-              :rules="[validateNotNull, validateRGP]" variant="outlined"></v-text-field>
+              :rules="[validateNotNull, validateUserRGP]" variant="outlined"></v-text-field>
             <v-text-field class="pb-2" label="CEP" v-model="formUserRegisterData.cep" required
               :rules="[validateNotNull, validateCEP]" variant="outlined"></v-text-field>
             <v-text-field class="pb-2" label="Complemento Endereço" v-model="formUserRegisterData.complemento" required
@@ -69,7 +69,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router"
-import { validateNotNull, validateEmail, validatePassword, validateCNPJ, validateRGP, validateCEP } from '@/utils.js/validation';
+import { validateNotNull, validateEmail, validatePassword, validateCNPJ, validateRGP, validateCEP, validateUserRGP } from '@/utils.js/validation';
 import APICalls from '@/services/APICalls';
 
 // Modal 
@@ -115,7 +115,7 @@ const isFormValid = computed(() => {
     if (key === 'cnpj' && validateCNPJ(value) !== true) {
       return false;
     }
-    if (key === 'rgp' && validateRGP(value) !== true) {
+    if (key === 'rgp' && validateUserRGP(value) !== true) {
       return false;
     }
     if (key === 'cep' && validateCEP(value) !== true) {
