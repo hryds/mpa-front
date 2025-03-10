@@ -57,7 +57,7 @@
                                         <p>Data Final do Lote: {{ new Date(producao.dataFinal +
                                             'T00:00:00').toLocaleDateString('pt-BR') }}</p>
                                         <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR')
-                                        }}
+                                            }}
                                         </p>
                                     </v-card-text>
                                     <div class="mb-10"></div>
@@ -66,7 +66,7 @@
                                         :headers="headers" dense hover :hide-default-footer="true" :items-per-page="-1"
                                         elevation="2" :items="producao.producaoEmbarcacaoEspecies.map(item => ({
                                             especie: item.especie?.nomeComum,
-                                            embarcacao: item.embarcacao?.rgp.toString()?.toUpperCase(),
+                                            embarcacao: item.embarcacao?.rgp.toString()?.toUpperCase().replace(/[^A-Za-z0-9]/g, ''),
                                             peso: `${item.peso} kg`
                                         }))" item-value="id"></v-data-table>
                                 </div>

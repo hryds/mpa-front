@@ -45,7 +45,7 @@
                   getUserData(producaoPorUsuario.userId)?.nome }}</v-card-title>
 
                 <v-card-subtitle class="mb-6 text-h7" style="text-align: center;">(id: {{ producaoPorUsuario.userId
-                }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </v-card-subtitle>
+                  }}) / CNPJ: {{ getUserData(producaoPorUsuario.userId)?.cnpj }} </v-card-subtitle>
                 <div v-if="producaoPorUsuario.producoes.length">
                   <div v-for="(producao, index) in producaoPorUsuario.producoes" :key="producao.id">
                     <div v-if="producao.producaoEmbarcacaoEspecies.length" class="borda-producao">
@@ -54,7 +54,7 @@
                         <p>Data Inicial do Lote: {{ new Date(producao.dataInicial +
                           'T00:00:00').toLocaleDateString('pt-BR') }}</p>
                         <p>Data Final do Lote: {{ new Date(producao.dataFinal + 'T00:00:00').toLocaleDateString('pt-BR')
-                        }}
+                          }}
                         </p>
                         <p>Data de Reporte: {{ new Date(producao.createdAt).toLocaleDateString('pt-BR') }}
                         </p>
@@ -63,7 +63,7 @@
                         :header-props="{ style: { fontWeight: 'bold', backgroundColor: '#f4f4f4' } }" :headers="headers"
                         :hide-default-footer="true" dense hover :items-per-page="-1" elevation="2" :items="producao.producaoEmbarcacaoEspecies.map((item) => ({
                           especie: item.especie?.nomeComum,
-                          embarcacao: item.embarcacao?.rgp.toString()?.toUpperCase(),
+                          embarcacao: item.embarcacao?.rgp.toString()?.toUpperCase().replace(/[^A-Za-z0-9]/g, ''),
                           peso: `${item.peso} kg`,
                         }))" item-value="id">
                       </v-data-table>
