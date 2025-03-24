@@ -126,7 +126,6 @@ const isFormValid = computed(() => {
 });
 
 
-
 const saveUser = async () => {
   try {
     formUserRegisterData.value.rgp = formUserRegisterData.value.rgp.toUpperCase();
